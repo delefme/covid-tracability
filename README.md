@@ -7,4 +7,6 @@ De moment, les tasques bàsiques a realitzar (a part de fer l'app en sí):
 
 3.- Per últim, volem les aules en les que es cursen les assignatures segons l'hora. Idees: fer scrapping d'això https://fme.upc.edu/ca/la-facultat/edifici/ocupacio-despais
 
+Recordeu que estem intentant millorar això: https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform
+
 Vinga va.
