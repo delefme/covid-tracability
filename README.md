@@ -5,7 +5,7 @@ De moment, les tasques bàsiques a realitzar (a part de fer l'app en sí):
 
 2.- També, volem els horaris de les assignatures per endevinar què està cursant l'usuari cada hora. Idees: parsejar això https://fme.upc.edu/ca/arxius/curs-actual/horaris/20-21/horari-gm_fme2020-2021_q1_provisional-1.pdf
 
-3.- Per últim, volem les aules en les que es cursen les assignatures segons l'hora. Idees: fer scrapping d'això https://fme.upc.edu/ca/la-facultat/edifici/ocupacio-despais
+3.- Per últim, volem les aules en les que es cursen les assignatures segons l'hora. Idees: fer scrapping d'això ~~https://fme.upc.edu/ca/la-facultat/edifici/ocupacio-despais~~ Aules Teoria: https://fme-intranet.upc.edu/appsext/mrbs/web/day.php?year=2020&month=9&day=17&area=2 Aules PC: https://fme-intranet.upc.edu/appsext/mrbs/web/day.php?year=2020&month=9&day=17&area=6
 
 Recordeu que estem intentant millorar això: https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform
 
