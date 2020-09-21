@@ -1,9 +1,11 @@
 <script type="text/javascript" src="./horaris.json"></script>
+<script type="text/javascript" src="./autocomplete.js"></script>
 <meta charset="utf-8">
 
 <html>
     <head>
     </head>
+    <link rel="stylesheet" href="autocomplete.css">
     <body>
         <h1>App de traçabilitat DAFME</h1>
         <h2 id = "assignatura"></h2>
@@ -22,15 +24,27 @@
 			<input type="text" id="seient" name="seient"><br>
 		</form>
 
+        <form autocomplete="off" action="/action_page.php">
+            <div class="autocomplete" style="width:300px;">
+                <input id="myInput" type="text" name="mySubject" placeholder="Subject">
+            </div>
+            <input type="submit">
+        </form>
+
 		<form id = "link" action = https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1063142948=S02>
 		    <input type="submit" value="Continua"/>
 		</form>
 
-        <script>
-        	//var linkOutput = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1063142948=S03"
-        	var linkOutput = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform.entry.1063142948=S03"
-        	//var linkOutput = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1749141911=8:00"
 
+
+        <script>
+
+            var subjects = ["Calcul 1", "Calcul 2", "Algebra Lineal", "Geometria", "Numerica", "EDOS"];
+
+            autocomplete(document.getElementById("myInput"), subjects);
+
+        	var linkOutput = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform"
+        	
         	var mydata = JSON.parse(classes);
 
             var hora_actual = new Date();
@@ -54,15 +68,23 @@
 
             for (i = 0; i < mydata.length; i++) { 
             	var h = mydata[i].hora.split(":");
-				if(h[0] == (hora_actual.getHours() - 1).toString()) {
+				if(h[0] == (hora_actual.getHours() - 5).toString()) {
 					console.log("trobat");
 					document.getElementById("assignatura").innerHTML = mydata[i].nom;
 					document.getElementById("aula").innerHTML = "Aula " + mydata[i].aula;
-					linkOutput += "?entry.1063142948=" + mydata[i].aula;
+
+                    var datamap=[
+                        "entry.1063142948=" + mydata[i].aula,
+                        "entry.1749141911=" + (hora_actual.getHours().toString() - 11) +":00",
+                        "entry.1827359679=" + (hora_actual.getHours().toString() - 10) +":00",
+                        "entry.2115504093=" + data
+                        ];
+                    var linkOutput = linkOutput+"?"+ datamap[1] + "&" + datamap[2] + "&" + datamap[3] + "&" + datamap[0];
 				}
 			}
             document.getElementById("data").innerHTML = data;
             document.getElementById("link").action = linkOutput;
+            console.log(document.getElementById("link").action);
         </script>
 
         
