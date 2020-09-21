@@ -1,10 +1,14 @@
+<script type="text/javascript" src="./horaris.json"></script>
+
 <html>
     <head>
     </head>
     <body>
         <h1>App de traçabilitat DAFME</h1>
         <h2>Estructures Algebràiques</h2>
+        <h2 id = "assignatura"></h2>
         <h3>Aula S03</h3>
+        <h3 id = "aula"></h3>
         <a href="#">No és així? Canvia-ho.</a>
         
         <h2 id="hora">
@@ -15,6 +19,8 @@
         <a href="#">No és així? Canvia-ho.</a>
         
         <script>
+        	var mydata = JSON.parse(classes);
+
             var hora_actual = new Date();
             var minuts;
             
@@ -33,6 +39,14 @@
             var mes = hora_actual.getMonth() + 1;
             var any = hora_actual.getFullYear();
             var data = dia.toString() + '/' + mes.toString() + '/' + any.toString();
+
+            for (i = 0; i < mydata.length; i++) { 
+            	var h = mydata[i].hora.split(":");
+				if(h[0] == (hora_actual.getHours() - 1).toString()) {
+					console.log("trobat");
+					document.getElementById("assignatura").innerHTML = mydata[i].nom;
+				}
+			}
             document.getElementById("data").innerHTML = data;
         </script>
     </body>

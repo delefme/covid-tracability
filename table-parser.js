@@ -1,4 +1,8 @@
+
+const fs = require('fs');
+
 let hores = [], newhour;
+
 for (let h = 8; h < 22; ++h) {
     newhour = "";
     if (h < 10) newhour += "0";
