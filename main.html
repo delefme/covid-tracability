@@ -1,13 +1,12 @@
 <script type="text/javascript" src="./horaris.json"></script>
+<meta charset="utf-8">
 
 <html>
     <head>
     </head>
     <body>
         <h1>App de traçabilitat DAFME</h1>
-        <h2>Estructures Algebràiques</h2>
         <h2 id = "assignatura"></h2>
-        <h3>Aula S03</h3>
         <h3 id = "aula"></h3>
         <a href="#">No és així? Canvia-ho.</a>
         
@@ -17,8 +16,21 @@
         </h2>
         <h3 id="data"></h3>
         <a href="#">No és així? Canvia-ho.</a>
-        
+
+        <form>
+			<label for="seient">Seient:</label><br>
+			<input type="text" id="seient" name="seient"><br>
+		</form>
+
+		<form id = "link" action = https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1063142948=S02>
+		    <input type="submit" value="Continua"/>
+		</form>
+
         <script>
+        	//var linkOutput = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1063142948=S03"
+        	var linkOutput = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform.entry.1063142948=S03"
+        	//var linkOutput = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1749141911=8:00"
+
         	var mydata = JSON.parse(classes);
 
             var hora_actual = new Date();
@@ -45,9 +57,15 @@
 				if(h[0] == (hora_actual.getHours() - 1).toString()) {
 					console.log("trobat");
 					document.getElementById("assignatura").innerHTML = mydata[i].nom;
+					document.getElementById("aula").innerHTML = "Aula " + mydata[i].aula;
+					linkOutput += "?entry.1063142948=" + mydata[i].aula;
 				}
 			}
             document.getElementById("data").innerHTML = data;
+            document.getElementById("link").action = linkOutput;
         </script>
+
+        
+
     </body>
 </html>
