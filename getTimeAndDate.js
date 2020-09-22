@@ -16,3 +16,20 @@ function getTimeAndDate() {
       any = hora_actual.getFullYear();
       data = dia.toString() + '/' + mes.toString() + '/' + any.toString();
 }
+
+function getDayFormat() {
+      dia = hora_actual.getDate();
+      if(dia < 10) return "0" + dia;
+      else return "" +dia;
+}
+
+function getMonthFormat() {
+      mes = hora_actual.getMonth() + 1;
+      if(mes < 10) return "0" + mes;
+      else return "" + mes;
+}
+
+function getYearFormat() {
+      any = hora_actual.getFullYear();
+      return "" +any;
+}
