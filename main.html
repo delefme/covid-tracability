@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <script type="text/javascript" src="./horaris.json"></script>
 <script type="text/javascript" src="./autocomplete.js"></script>
+<script type="text/javascript" src="./completeLink.js"></script>
+<script type="text/javascript" src="./completeSubjectListInHTML.js"></script>
+<script type="text/javascript" src="./getTimeAndDate.js"></script>
 <meta charset="utf-8">
 
 <html>
@@ -31,95 +34,39 @@
         <div id="subjectList"></div>
 
         <form>
-            <label for="seient" id="seient2"></label><br>
+            <label for="seient" id="seient"></label><br>
             <input type="text" id="seientInput" placeholder="Seient"><br>
         </form>
 
 		<form id = "link">
-        <!--<form id = "link" action = https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1063142948=S03&entry.2115504093=2020-09-14&entry.1749141911=9:00&entry.1827359679=10:00&entry.1077148310=Columna+3&entry.1600275159=[Autogenerat+per+delefme/covid-tracability]>-->
-		<input type="submit" value="Continua"/>
+        <!--<form id = "link" action = https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1063142948=S03&entry.2115504093=2020-09-14&entry.1749141911=9:00&entry.1827359679=10:00&entry.208184485=Columna+3&entry.1600275159=[Autogenerat+per+delefme/covid-tracability]>-->
+		<button onclick="completaLink()">Continua</button>
 		</form>
 
         <script>
+        	var codisFiles = ["208184485", "1077148310", "642851281", "1686039024", "697835787", "1511799646", "809853432", "182597499", "1890539481", "529159478", "1615241874", "1334263875"];
             var classesAlumne = [{}];
-            if(localStorage.pos == null) localStorage.pos = 0;
-
-            document.getElementById("seientInput").value = "hola";
-
             var subjects = ["Calcul 1", "Calcul 2", "Algebra Lineal", "Geometria", "Numerica", "EDOS"];
-
-            autocomplete(document.getElementById("myInput"), subjects);
-
-            
-
-        	var linkOutput = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform";
-        	
+        	var linkOutput = "";      	
         	var mydata = JSON.parse(classes);
             let datahoraris = JSON.stringify(classesAlumne);
-
             var hora_actual = new Date();
-            var minuts;
-            
-            // Hora d'inici
-            hora_actual.setMinutes(0, 0, 0); // Arrodonir per baix els minuts
-            minuts = hora_actual.getMinutes() < 10 ? hora_actual.getMinutes().toString() + '0' : hora_actual.getMinutes().toString();
-            document.getElementById("inici").innerHTML = hora_actual.getHours().toString() + ":" + minuts;
-            
-            // Hora de fi
-            hora_actual.setHours(hora_actual.getHours() + 1); // Sumar una hora
-            minuts = hora_actual.getMinutes() < 10 ? hora_actual.getMinutes().toString() + '0' : hora_actual.getMinutes().toString();
-            document.getElementById("fi").innerHTML = hora_actual.getHours().toString() + ":" + minuts;
-            
-            // Data
-            var dia = hora_actual.getDate();
-            var mes = hora_actual.getMonth() + 1;
-            var any = hora_actual.getFullYear();
-            var data = dia.toString() + '/' + mes.toString() + '/' + any.toString();
+            var minuts, dia, mes, any, data;
 
-            document.getElementById("link").onclick = completaLink();
+            if(localStorage.pos == null) localStorage.pos = 0;
 
+            autocomplete(document.getElementById("myInput"), subjects);
+            	
+            getTimeAndDate();
+            
             if(localStorage.classesAlumne != null) classesAlumne = JSON.parse(localStorage.classesAlumne);
 
-            for(i = 0; i < classesAlumne.length; i++) {
-                document.getElementById("subjectList").innerHTML += "<br>" +  classesAlumne[i];
-            } 
-
-
-            function completaLink() {
-                console.log(document.getElementById("seientInput").value);
-                for (i = 0; i < mydata.length; i++) { 
-                	var h = mydata[i].hora.split(":");
-    				if(h[0] == (hora_actual.getHours() - 7).toString()) {
-    					console.log("trobat");
-    					document.getElementById("assignatura").innerHTML = mydata[i].nom;
-    					document.getElementById("aula").innerHTML = "Aula " + mydata[i].aula;
-
-                        var datamap=[
-                            "entry.1063142948=" + mydata[i].aula,
-                            "entry.1749141911=" + (hora_actual.getHours().toString() - 11) +":00",
-                            "entry.1827359679=" + (hora_actual.getHours().toString() - 10) +":00",
-                            "entry.2115504093=" + any.toString() + '-' + mes.toString() + '-' + dia.toString(),
-                            "entry.1077148310=Columna+" + document.getElementById("seientInput").value
-                            ];
-                        linkOutput += "?"+ datamap[1] + "&" + datamap[2] + "&" + datamap[3] + "&" + datamap[0] + "&" + datamap[4];
-    				}
-    			}
-                //window.location.href = linkOutput;
-            }
+            writeSubjectList();
+           
             document.getElementById("data").innerHTML = data;
-            //document.getElementById("link").action = linkOutput;
-        </script>
-
-        <script>
-            function completeSubjectList() {
-                classesAlumne[localStorage.pos] = document.getElementById("myInput").value;
-                localStorage.pos++;
-                console.log(document.getElementById("myInput").value);
-                document.getElementById("subjectList").innerHTML += "<br>" +  document.getElementById("myInput").value;
-                localStorage.classesAlumne = JSON.stringify(classesAlumne);
-            }
 
         </script>
+
 
     </body>
 </html>
