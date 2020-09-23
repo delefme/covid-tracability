@@ -1,0 +1,40 @@
+.myButton {
+	box-shadow:inset 0px 1px 0px 0px #6e9eb8;
+	background:linear-gradient(to bottom, #1a5b8c 5%, #4b84a3 100%);
+	background-color:#1a5b8c;
+	border:1px solid #22536e;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:13px;
+	font-weight:bold;
+	padding:6px 12px;
+	text-decoration:none;
+}
+.myButton:hover {
+	background:linear-gradient(to bottom, #4b84a3 5%, #1a5b8c 100%);
+	background-color:#4b84a3;
+}
+.myButton:active {
+	position:relative;
+	top:1px;
+}
+.alert  {
+  position: fixed;
+  top: 0;
+  right: 0.5rem;
+  border:1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 0.25rem;
+  padding: 2rem;
+  background: #fff;
+  color: #f65656;
+  box-shadow: 0 5px 10px -5px rgba(0, 0, 0, 0.5);
+  transition:  all 0.2s ease-in-out;
+  opacity: 0;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(1.25rem);
+}

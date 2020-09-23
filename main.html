@@ -4,70 +4,104 @@
 <script type="text/javascript" src="./completeLink.js"></script>
 <script type="text/javascript" src="./completeSubjectListInHTML.js"></script>
 <script type="text/javascript" src="./getTimeAndDate.js"></script>
+<script type="text/javascript" src="./completeHTML.js"></script>
+<script type="text/css" src="./autocomplete.css"></script>
+<script type="text/css" src="./generalStyle.css"></script>
 <meta charset="utf-8">
 
 <html>
     <head>
+    	<style type="text/css">
+    		.myButton {
+				box-shadow:inset 0px 1px 0px 0px #6e9eb8;
+				background:linear-gradient(to bottom, #1a5b8c 5%, #4b84a3 100%);
+				background-color:#1a5b8c;
+				border:1px solid #22536e;
+				display:inline-block;
+				cursor:pointer;
+				color:#ffffff;
+				font-family:Arial;
+				font-size:13px;
+				font-weight:bold;
+				padding:6px 12px;
+				text-decoration:none;
+			}
+			.myButton:hover {
+				background:linear-gradient(to bottom, #4b84a3 5%, #1a5b8c 100%);
+				background-color:#4b84a3;
+			}
+			.myButton:active {
+				position:relative;
+				top:1px;
+			}
+		</style>
     </head>
-    <link rel="stylesheet" href="autocomplete.css">
-    <body>
-        <h1>App de traçabilitat DAFME</h1>
-        <h2 id = "assignatura"></h2>
-        <h3 id = "aula"></h3>
-        <a href="#">No és així? Canvia-ho.</a>
-        
-        <h2 id="hora">
-            <span id="inici"></span> -
-            <span id="fi"></span>
-        </h2>
-        <h3 id="data"></h3>
-        <a href="#">No és així? Canvia-ho.</a>
+    <center>
+	    <link rel="stylesheet" href="autocomplete.css">
+	    <body>
+	        <h1>App de traçabilitat DAFME</h1>
+	        <h2 id = "assignatura"></h2>
+	        <h3 id = "aula"></h3>
+	        
+	        <h2 id="hora">
+	            <span id="inici"></span> -
+	            <span id="fi"></span>
+	        </h2>
+	        <h3 id="data"></h3>
+	        <p> <br></p>
 
-        <form id="subjectListInput" autocomplete="off">
-            <div class="autocomplete" id="input2" style="width:300px;">
-                <input id="myInput" type="text" name="mySubject" placeholder="Subject">
-            </div>
-            
-        </form>
-        <button onclick="completeSubjectList()">Afegeix</button>
+	        <form id="subjectListInput" autocomplete="off">
+	            <div class="autocomplete" id="input2" style="width:300px;">
+	                <input id="myInput" type="text" name="mySubject" placeholder="Subject">
+	            </div>
+	        </form>
 
-        <div id="subjectList"></div>
+	        <a class="myButton" onclick="completeSubjectList()">Afegeix</a>
 
-        <form>
-            <label for="seient" id="seient"></label><br>
-            <input type="text" id="seientInput" placeholder="Seient"><br>
-        </form>
+	        <p id="alert" style="opacity: 0; color:red;"> 
+				
+			</p> 
+	        <div id="subjectList"><b>Assignatures Cursades:</b></div>
 
-		<form id = "link">
-        <!--<form id = "link" action = https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1063142948=S03&entry.2115504093=2020-09-14&entry.1749141911=9:00&entry.1827359679=10:00&entry.208184485=Columna+3&entry.1600275159=[Autogenerat+per+delefme/covid-tracability]>-->
-        	https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1749141911=8:00&entry.1827359679=9:00&entry.2115504093=2020-9-22&entry.1063142948=S02&entry.1077148310=Columna+d4&entry.1686039024=Columna+4
-		<button type="reset" onclick="completaLink()">Continua</button>
-		</form>
+	        <form>
+	            <label for="seient" id="seient"></label><br>
+	            <input type="text" id="seientInput" placeholder="Seient" style="width:300px;"><br>
+	        </form>
 
-        <script>
-        	var codisFiles = ["208184485", "1077148310", "642851281", "1686039024", "697835787", "1511799646", "809853432", "182597499", "1890539481", "529159478", "1615241874", "1334263875"];
-            var classesAlumne = [{}];
-            var subjects = ["Calcul 1", "Calcul 2", "Algebra Lineal", "Geometria", "Numerica", "EDOS"];
-        	var linkOutput = "";      	
-        	var mydata = JSON.parse(classes);
-            let datahoraris = JSON.stringify(classesAlumne);
-            var hora_actual = new Date();
-            var minuts, dia, mes, any, data;
+			<form id = "link">
+	        <!--<form id = "link" action = https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1063142948=S03&entry.2115504093=2020-09-14&entry.1749141911=9:00&entry.1827359679=10:00&entry.208184485=Columna+3&entry.1600275159=[Autogenerat+per+delefme/covid-tracability]>-->
 
-            if(localStorage.pos == null) localStorage.pos = 0;
+			<a class="myButton" type="reset" onclick="completaLink()">Continua</a>
+			</form>
 
-            autocomplete(document.getElementById("myInput"), subjects);
-            	
-            getTimeAndDate();
-            
-            if(localStorage.classesAlumne != null) classesAlumne = JSON.parse(localStorage.classesAlumne);
+			<p> <br></p>
+			<a class="myButton" href="https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform">Hi ha errors? Completa formulari manualment</a>
 
-            writeSubjectList();
-           
-            document.getElementById("data").innerHTML = data;
+	        <script>
+	        	//localStorage.clear();
 
-        </script>
+	        	var codisFiles = ["208184485", "1077148310", "642851281", "1686039024", "697835787", "1511799646", "809853432", "182597499", "1890539481", "529159478", "1615241874", "1334263875"];
+	            var subjects = [];
+	        	var linkOutput = "";      	
+	        	var totesLesClasses = JSON.parse(classes);
+	            var dataHorarisAlumne = [];
+	            var hora_actual = new Date();
+	            var minuts, dia, mes, any, data;
+
+	            if(localStorage.dataHorarisAlumne != null) dataHorarisAlumne = JSON.parse(localStorage.dataHorarisAlumne);
+
+	            console.log(localStorage.dataHorarisAlumne);
+
+	           	//localStorage.clear();
+	            returnAllSubjectArray();
+	            autocomplete(document.getElementById("myInput"), subjects);
+	            getTimeAndDate();
+	            completaHTML();
+	            writeSubjectList();
+
+	        </script>
 
 
-    </body>
+	    </body>
+	</center>
 </html>
