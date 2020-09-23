@@ -34,6 +34,28 @@
 				position:relative;
 				top:1px;
 			}
+			.myButton2 {
+				box-shadow:inset 0px 1px 0px 0px #b30000;
+				background:linear-gradient(to bottom, #ff1a1a 5%, #ff8080 100%);
+				background-color:#ff6666;
+				border:1px solid #990000;
+				display:inline-block;
+				cursor:pointer;
+				color:#ffffff;
+				font-family:Arial;
+				font-size:13px;
+				font-weight:bold;
+				padding:6px 12px;
+				text-decoration:none;
+			}
+			.myButton2:hover {
+				background:linear-gradient(to bottom, #ff8080 5%, #ff1a1a 100%);
+				background-color:#ff6666;
+			}
+			.myButton2:active {
+				position:relative;
+				top:1px;
+			}
 		</style>
     </head>
     <center>
@@ -48,7 +70,6 @@
 	            <span id="fi"></span>
 	        </h2>
 	        <h3 id="data"></h3>
-	        <p> <br></p>
 
 	        <form id="subjectListInput" autocomplete="off">
 	            <div class="autocomplete" id="input2" style="width:300px;">
@@ -71,10 +92,12 @@
 			<form id = "link">
 	        <!--<form id = "link" action = https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1063142948=S03&entry.2115504093=2020-09-14&entry.1749141911=9:00&entry.1827359679=10:00&entry.208184485=Columna+3&entry.1600275159=[Autogenerat+per+delefme/covid-tracability]>-->
 
-			<a class="myButton" type="reset" onclick="completaLink()">Continua</a>
+			<h2>
+				<a class="myButton" type="reset" onclick="completaLink()">Continua</a>
+				<a class="myButton2" onclick="completaLinkNoAnatClasse()">No he assistit a classe</a>
+			</h2>
 			</form>
 
-			<p> <br></p>
 			<a class="myButton" href="https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform">Hi ha errors? Completa formulari manualment</a>
 
 	        <script>
@@ -89,8 +112,6 @@
 	            var minuts, dia, mes, any, data;
 
 	            if(localStorage.dataHorarisAlumne != null) dataHorarisAlumne = JSON.parse(localStorage.dataHorarisAlumne);
-
-	            console.log(localStorage.dataHorarisAlumne);
 
 	           	//localStorage.clear();
 	            returnAllSubjectArray();
