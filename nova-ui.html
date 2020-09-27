@@ -7,12 +7,34 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         
         <style>
-            #inner-container .container {
+            body {
+                background-color: lightgray;
+            }
+            
+            #outter-container {
+                margin: 40px 20px;
+            }
+            
+            #inner-container {
                 width: 80%;
+                background-color: white;
+                padding: 50px;
                 margin: 0 auto;
             }
             
-            #subject-container {
+            .label, .final {
+                font-size: 36px;
+            }
+            
+            .final {
+                color: gray;
+            }
+            
+            section {
+                padding: 10px 0;
+            }
+            
+            .container {
                 /* flexbox setup */
                 display: -webkit-flex;
                 -webkit-flex-direction: row;
@@ -22,51 +44,126 @@
                 flex-wrap: wrap;
                 
                 justify-content: center;
+                align-items : center;
+                
+                height: 75vh;
+                overflow-y: auto;
             }
             
-            .current-subject {
-                background-color: #ccc;
-                               
-                flex: 1 0 34%;
+            .button {
+                border: solid 2px #26bdff;
+                color: black;
+                font-size: 5vw;
+                                            
+                flex: 1 0 20%;
                 margin: 20px;
-                padding: 20px;
+                padding: 40px 20px;
                 
                 vertical-align: middle;
+                text-align: center;
+            }
+            
+            .selected {
+                background-color: #c3ddff;
+            }
+            
+            #subject-container .button {
                 text-align: left;
+                flex: 1 0 20%;
+                height: auto;
             }
             
             .current-subject .title {
-                font-size: 3vw;
+                font-size: 18px;
             }
             .current-subject .subtitle {
-                font-size: 2vw;
+                font-size: 14px;
             }
         </style>
     </head>
     
     <body>
-        <div id="subject-container container">
-            <div class="current-subject">
-                <div class="title">Àlgebra Lineal</div>
-                <div class="subtitle">Aula 001</div>
-                <div class="subtitle">9.00 - 10.00</div>
-            </div>
-            <div class="current-subject">
-                <div class="title">Àlgebra Lineal</div>
-                <div class="subtitle">Aula 001</div>
-                <div class="subtitle">9.00 - 10.00</div>
-            </div>
-            <div class="current-subject">
-                <div class="title">Àlgebra Lineal</div>
-                <div class="subtitle">Aula 001</div>
-                <div class="subtitle">9.00 - 10.00</div>
-            </div>
-            <div class="current-subject">
-                <div class="title">Àlgebra Lineal</div>
-                <div class="subtitle">Aula 001</div>
-                <div class="subtitle">9.00 - 10.00</div>
+        <div id="outter-container">
+            <div id="inner-container">
+                <section id="subject-section">
+                    <div class="showhide">
+                        <span id="subject-label" class="label">Assignatura (Aula):</span>
+                        <span id="subject-final" class="final"></span>
+                    </div>
+                    <div id="subject-container" class="container">
+                        <div class="current-subject button">
+                            <div class="title">Àlgebra Lineal</div>
+                            <div class="subtitle">Aula 001</div>
+                            <div class="subtitle">9.00 - 10.00</div>
+                        </div>
+                        <div class="current-subject button">
+                            <div class="title">Àlgebra Lineal</div>
+                            <div class="subtitle">Aula 001</div>
+                            <div class="subtitle">9.00 - 10.00</div>
+                        </div>
+                        <div class="current-subject button">
+                            <div class="title">Àlgebra Lineal</div>
+                            <div class="subtitle">Aula 001</div>
+                            <div class="subtitle">9.00 - 10.00</div>
+                        </div>
+                        <div class="current-subject button">
+                            <div class="title">Àlgebra Lineal</div>
+                            <div class="subtitle">Aula 001</div>
+                            <div class="subtitle">9.00 - 10.00</div>
+                        </div>
+                    </div>
+                </section>
+                <section id="number-section">
+                    <div class="showhide">
+                        <span id="number-label" class="label">Número de seient:</span>
+                        <span id="number-final" class="final"></span>
+                    </div>
+                    <div id="number-container" class="container">
+                        <div class="number button">1</div>
+                        <div class="number button">2</div>
+                        <div class="number button">3</div>
+                        <div class="number button">4</div>
+                        <div class="number button">5</div>
+                        <div class="number button">6</div>
+                        <div class="number button">7</div>
+                        <div class="number button">8</div>
+                        <div class="number button">9</div>
+                        <div class="number button">10</div>
+                    </div>
+                </section>
+                <section id="letter-section">
+                    <div class="showhide">
+                        <span id="letter-label" class="label">Lletra de seient:</span>
+                        <span id="letter-final" class="final"></span>
+                    </div>
+                    <div id="leter-container" class="container">
+                        <div class="letter button">A</div>
+                        <div class="letter button">B</div>
+                        <div class="letter button">C</div>
+                        <div class="letter button">D</div>
+                        <div class="letter button">E</div>
+                        <div class="letter button">F</div>
+                        <div class="letter button">G</div>
+                        <div class="letter button">H</div>
+                        <div class="letter button">I</div>
+                        <div class="letter button">J</div>
+                        <div class="letter button">K</div>
+                        <div class="letter button">L</div>
+                    </div>
+                </section>
+                <section id="date-section">
+                    <div class="showhide">
+                        <span id="date-label" class="label">Data:</span>
+                        <span id="date-final" class="final">16/01/2020</span>
+                    </div>
+                </section>
+                <section id="hour-section">
+                    <div class="showhide">
+                        <span id="hour-label" class="label">Hora:</span>
+                        <span id="hour-final" class="final">09.00 - 10.00</span>
+                    </div>
+                </section>
             </div>
         </div>
-
     </body>
 </html>
