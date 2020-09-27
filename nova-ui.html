@@ -6,6 +6,24 @@
         <!-- Load Jquery -->
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         
+        <script>
+            // Check if user is signed in
+            var api_url = "https://covid-tracability-backend-dev.sandbox.avm99963.com/api/v1/";
+            fetch(api_url + "isSignedIn")
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.payload.signedIn) {
+                        console.log("Not signed in!");
+                        return fetch(api_url + "getAuthUrl");
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // TODO: redirect here
+                    alert(data.payload.url);
+                });
+        </script>
+        
         <style>
             body {
                 background-color: lightgray;
@@ -18,12 +36,16 @@
             #inner-container {
                 width: 80%;
                 background-color: white;
-                padding: 50px;
+                padding: 20px 50px;
                 margin: 0 auto;
             }
             
             .label, .final {
                 font-size: 36px;
+            }
+            
+            .label {
+                padding-top: 50px;
             }
             
             .final {
@@ -48,6 +70,7 @@
                 
                 height: 75vh;
                 overflow-y: auto;
+                margin: 50px 0;
             }
             
             .button {
@@ -83,9 +106,8 @@
             #send-button {
                 font-size: 48px;
                 width: 80%;
-                margin: 0 auto;
+                margin: 50px auto;
                 display: block;
-                margin-top: 50px;
                 padding: 50px 30px;
                 background-color: #26bdff;
                 color: white;
@@ -97,10 +119,6 @@
         <div id="outter-container">
             <div id="inner-container">
                 <section id="subject-section">
-                    <div class="showhide">
-                        <span id="subject-label" class="label">Assignatura (Aula):</span>
-                        <span id="subject-final" class="final"></span>
-                    </div>
                     <div id="subject-container" class="container">
                         <div class="current-subject button" id="subject-1" onclick="js:clickButton(this.parentNode.id, this.id)">
                             <div class="title">Àlgebra Lineal</div>
@@ -123,12 +141,12 @@
                             <div class="subtitle">9.00 - 10.00</div>
                         </div>
                     </div>
+                    <div class="showhide">
+                        <span id="subject-label" class="label">Assignatura (Aula):</span>
+                        <span id="subject-final" class="final"></span>
+                    </div>
                 </section>
                 <section id="number-section">
-                    <div class="showhide">
-                        <span id="number-label" class="label">Número de seient:</span>
-                        <span id="number-final" class="final"></span>
-                    </div>
                     <div id="number-container" class="container">
                         <div class="number button" id="number-1">1</div>
                         <div class="number button" id="number-2">2</div>
@@ -141,12 +159,12 @@
                         <div class="number button" id="number-9">9</div>
                         <div class="number button" id="number-10">10</div>
                     </div>
+                    <div class="showhide">
+                        <span id="number-label" class="label">Número de seient:</span>
+                        <span id="number-final" class="final"></span>
+                    </div>
                 </section>
                 <section id="letter-section">
-                    <div class="showhide">
-                        <span id="letter-label" class="label">Lletra de seient:</span>
-                        <span id="letter-final" class="final"></span>
-                    </div>
                     <div id="letter-container" class="container">
                         <div class="letter button" id="letter-A">A</div>
                         <div class="letter button" id="letter-B">B</div>
@@ -160,6 +178,10 @@
                         <div class="letter button" id="letter-J">J</div>
                         <div class="letter button" id="letter-K">K</div>
                         <div class="letter button" id="letter-L">L</div>
+                    </div>
+                    <div class="showhide">
+                        <span id="letter-label" class="label">Lletra de seient:</span>
+                        <span id="letter-final" class="final"></span>
                     </div>
                 </section>
                 <section id="date-section">
@@ -180,7 +202,7 @@
             </div>
         </div>
         
-        <script>        
+        <script>
             var subjects_texts = {
                 "subject-1": "Àlgebra",
                 "subject-2": "Càlcul I",
@@ -188,6 +210,39 @@
                 "subject-4": "Informàtica"
             };
             
+            function sendForm(data) {
+                // Add subject to user
+                fetch(api_url + "addUserSubject", {
+                  "method": "POST",
+                  "body": JSON.stringify({
+                            subject: data["subject"]
+                          }),
+                  "mode": "cors",
+                  "credentials": "include"
+                })
+                .then(res => res.json())
+                .then(json => {
+                  console.log("Subject added to user: ", json);
+                  // TODO: Redirect to Google Forms
+                  var formulari_link = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1063142948=S03&entry.2115504093=2020-09-14&entry.1749141911=9:00&entry.1827359679=10:00&entry.208184485=Columna+3&entry.1600275159=[Autogenerat+per+delefme/covid-tracability]";
+                  window.location.href = formulari_link;
+                });
+             }
+             
+             document.getElementById("send-button").addEventListener('click', function (el) {
+                // TODO: emplenar això amb informació real
+                sendForm({
+                    "aula": "001",
+                    "subject": 1,
+                    "data": "16/01/2020",
+                    "hora-inici": "9:00",
+                    "hora-final": "10:00",
+                    "seient": "7D"
+                });
+             });
+        </script>
+        
+        <script>
             var elements = document.getElementsByClassName("button");
             Array.from(elements).forEach(function(element) {
                 element.addEventListener('click', clickButton);
@@ -212,7 +267,7 @@
                     // Canvi JSON
                     // TODO
                     // Anchor següent pregunta
-                    document.getElementById("number-section").scrollIntoView();
+                    document.getElementById("subject-label").scrollIntoView();
                 } else if (parent == "number-container") {
                     // Canvi de background del button
                     $(".number").css("background-color", "white");
@@ -222,7 +277,7 @@
                     // Canvi JSON
                     // TODO
                     // Anchor següent pregunta
-                    document.getElementById("letter-section").scrollIntoView();
+                    document.getElementById("number-label").scrollIntoView();
                 } else if (parent == "letter-container") {
                     // Canvi de background del button
                     $(".letter").css("background-color", "white");
@@ -232,7 +287,7 @@
                     // Canvi JSON
                     // TODO
                     // Anchor següent pregunta
-                    document.getElementById("send-button").scrollIntoView();
+                    document.getElementById("letter-label").scrollIntoView();
                 }
             }
         </script>
