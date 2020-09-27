@@ -12,7 +12,7 @@ class TableParser:
     def __init__(self, baseUrl):
         self.baseUrl = baseUrl
 
-    def parse(self, year, month, day, area, db):
+    def parse(self, year, month, day, area, db = None):
         url = self.baseUrl
         params = {
             'year': year,
@@ -56,23 +56,25 @@ class TableParser:
                     begins = pytz.timezone(self.TIMEZONE).localize(begins)
                     ends = begins + timedelta(minutes=durada)
 
-                    print("Afegint " + assignaturaRaw
+                    print(("Afegint " if db != None else "") + assignaturaRaw
                             + ", " + hora
                             + ", " + str(durada) + "mins"
                             + ", " + aula)
 
-                    cursor1 = db.cursor()
-                    cursor1.execute("SELECT id FROM classes WHERE calendar_name = ? AND room = ? AND begins = ? AND ends = ?",
-                            assignatura, aula, begins, ends)
-                    row = cursor1.fetchone()
-                    if row:
-                        print("[WARNING] Ja estava a la DB (id " + str(row.id) + ")")
-                    else:
-                        cursor2 = db.cursor()
-                        cursor2.execute("INSERT INTO classes (calendar_name, room, begins, ends) VALUES (?, ?, ?, ?)",
+                    if db != None:
+                        cursor1 = db.cursor()
+                        cursor1.execute("SELECT id FROM classes WHERE calendar_name = ? AND room = ? AND begins = ? AND ends = ?",
                                 assignatura, aula, begins, ends)
+                        row = cursor1.fetchone()
+                        if row:
+                            print("[WARNING] Ja estava a la DB (id " + str(row.id) + ")")
+                        else:
+                            cursor2 = db.cursor()
+                            cursor2.execute("INSERT INTO classes (calendar_name, room, begins, ends) VALUES (?, ?, ?, ?)",
+                                    assignatura, aula, begins, ends)
 
                 td_hora = td_hora.findNext('td')
                 column = column + 1
 
-        db.commit()
+        if db != None:
+            db.commit()
