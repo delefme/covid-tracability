@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ca">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Load Jquery -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        
+        <style>
+            #inner-container .container {
+                width: 80%;
+                margin: 0 auto;
+            }
+            
+            #subject-container {
+                /* flexbox setup */
+                display: -webkit-flex;
+                -webkit-flex-direction: row;
+
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                
+                justify-content: center;
+            }
+            
+            .current-subject {
+                background-color: #ccc;
+                               
+                flex: 1 0 34%;
+                margin: 20px;
+                padding: 20px;
+                
+                vertical-align: middle;
+                text-align: left;
+            }
+            
+            .current-subject .title {
+                font-size: 3vw;
+            }
+            .current-subject .subtitle {
+                font-size: 2vw;
+            }
+        </style>
+    </head>
+    
+    <body>
+        <div id="subject-container container">
+            <div class="current-subject">
+                <div class="title">Àlgebra Lineal</div>
+                <div class="subtitle">Aula 001</div>
+                <div class="subtitle">9.00 - 10.00</div>
+            </div>
+            <div class="current-subject">
+                <div class="title">Àlgebra Lineal</div>
+                <div class="subtitle">Aula 001</div>
+                <div class="subtitle">9.00 - 10.00</div>
+            </div>
+            <div class="current-subject">
+                <div class="title">Àlgebra Lineal</div>
+                <div class="subtitle">Aula 001</div>
+                <div class="subtitle">9.00 - 10.00</div>
+            </div>
+            <div class="current-subject">
+                <div class="title">Àlgebra Lineal</div>
+                <div class="subtitle">Aula 001</div>
+                <div class="subtitle">9.00 - 10.00</div>
+            </div>
+        </div>
+
+    </body>
+</html>
