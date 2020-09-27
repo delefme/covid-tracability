@@ -79,6 +79,17 @@
             .current-subject .subtitle {
                 font-size: 14px;
             }
+            
+            #send-button {
+                font-size: 48px;
+                width: 80%;
+                margin: 0 auto;
+                display: block;
+                margin-top: 50px;
+                padding: 50px 30px;
+                background-color: #26bdff;
+                color: white;
+            }
         </style>
     </head>
     
@@ -91,22 +102,22 @@
                         <span id="subject-final" class="final"></span>
                     </div>
                     <div id="subject-container" class="container">
-                        <div class="current-subject button">
+                        <div class="current-subject button" id="subject-1" onclick="js:clickButton(this.parentNode.id, this.id)">
                             <div class="title">Àlgebra Lineal</div>
                             <div class="subtitle">Aula 001</div>
                             <div class="subtitle">9.00 - 10.00</div>
                         </div>
-                        <div class="current-subject button">
+                        <div class="current-subject button" id="subject-2">
                             <div class="title">Àlgebra Lineal</div>
                             <div class="subtitle">Aula 001</div>
                             <div class="subtitle">9.00 - 10.00</div>
                         </div>
-                        <div class="current-subject button">
+                        <div class="current-subject button" id="subject-3">
                             <div class="title">Àlgebra Lineal</div>
                             <div class="subtitle">Aula 001</div>
                             <div class="subtitle">9.00 - 10.00</div>
                         </div>
-                        <div class="current-subject button">
+                        <div class="current-subject button" id="subject-4">
                             <div class="title">Àlgebra Lineal</div>
                             <div class="subtitle">Aula 001</div>
                             <div class="subtitle">9.00 - 10.00</div>
@@ -119,16 +130,16 @@
                         <span id="number-final" class="final"></span>
                     </div>
                     <div id="number-container" class="container">
-                        <div class="number button">1</div>
-                        <div class="number button">2</div>
-                        <div class="number button">3</div>
-                        <div class="number button">4</div>
-                        <div class="number button">5</div>
-                        <div class="number button">6</div>
-                        <div class="number button">7</div>
-                        <div class="number button">8</div>
-                        <div class="number button">9</div>
-                        <div class="number button">10</div>
+                        <div class="number button" id="number-1">1</div>
+                        <div class="number button" id="number-2">2</div>
+                        <div class="number button" id="number-3">3</div>
+                        <div class="number button" id="number-4">4</div>
+                        <div class="number button" id="number-5">5</div>
+                        <div class="number button" id="number-6">6</div>
+                        <div class="number button" id="number-7">7</div>
+                        <div class="number button" id="number-8">8</div>
+                        <div class="number button" id="number-9">9</div>
+                        <div class="number button" id="number-10">10</div>
                     </div>
                 </section>
                 <section id="letter-section">
@@ -136,19 +147,19 @@
                         <span id="letter-label" class="label">Lletra de seient:</span>
                         <span id="letter-final" class="final"></span>
                     </div>
-                    <div id="leter-container" class="container">
-                        <div class="letter button">A</div>
-                        <div class="letter button">B</div>
-                        <div class="letter button">C</div>
-                        <div class="letter button">D</div>
-                        <div class="letter button">E</div>
-                        <div class="letter button">F</div>
-                        <div class="letter button">G</div>
-                        <div class="letter button">H</div>
-                        <div class="letter button">I</div>
-                        <div class="letter button">J</div>
-                        <div class="letter button">K</div>
-                        <div class="letter button">L</div>
+                    <div id="letter-container" class="container">
+                        <div class="letter button" id="letter-A">A</div>
+                        <div class="letter button" id="letter-B">B</div>
+                        <div class="letter button" id="letter-C">C</div>
+                        <div class="letter button" id="letter-D">D</div>
+                        <div class="letter button" id="letter-E">E</div>
+                        <div class="letter button" id="letter-F">F</div>
+                        <div class="letter button" id="letter-G">G</div>
+                        <div class="letter button" id="letter-H">H</div>
+                        <div class="letter button" id="letter-I">I</div>
+                        <div class="letter button" id="letter-J">J</div>
+                        <div class="letter button" id="letter-K">K</div>
+                        <div class="letter button" id="letter-L">L</div>
                     </div>
                 </section>
                 <section id="date-section">
@@ -163,7 +174,67 @@
                         <span id="hour-final" class="final">09.00 - 10.00</span>
                     </div>
                 </section>
+                <button id="send-button">
+                    <span>Anar al formulari</span>
+                </button>
             </div>
         </div>
+        
+        <script>        
+            var subjects_texts = {
+                "subject-1": "Àlgebra",
+                "subject-2": "Càlcul I",
+                "subject-3": "Topologia",
+                "subject-4": "Informàtica"
+            };
+            
+            var elements = document.getElementsByClassName("button");
+            Array.from(elements).forEach(function(element) {
+                element.addEventListener('click', clickButton);
+                element.parent = element.parentNode.id;
+                console.log(element.id);
+            });
+            
+            function clickButton(element) {
+                var parent = element.currentTarget.parent;
+                var id = element.currentTarget.id;
+                var final_text = (id.split("-")[0] == "subject" ? subjects_texts[id] : id.split("-")[1]);
+                
+                console.log(parent);
+                console.log(id);
+                
+                if (parent == "subject-container") {
+                    // Canvi de background del button
+                    $(".current-subject").css("background-color", "white");
+                    $("#" + id).css("background-color", "#c3ddff");
+                    // Canvi del text al final
+                    $("#" + parent).parent().find(".final").html(final_text);
+                    // Canvi JSON
+                    // TODO
+                    // Anchor següent pregunta
+                    document.getElementById("number-section").scrollIntoView();
+                } else if (parent == "number-container") {
+                    // Canvi de background del button
+                    $(".number").css("background-color", "white");
+                    $("#" + id).css("background-color", "#c3ddff");
+                    // Canvi del text al final
+                    $("#" + parent).parent().find(".final").html(final_text);
+                    // Canvi JSON
+                    // TODO
+                    // Anchor següent pregunta
+                    document.getElementById("letter-section").scrollIntoView();
+                } else if (parent == "letter-container") {
+                    // Canvi de background del button
+                    $(".letter").css("background-color", "white");
+                    $("#" + id).css("background-color", "#c3ddff");
+                    // Canvi del text al final
+                    $("#" + parent).parent().find(".final").html(final_text);
+                    // Canvi JSON
+                    // TODO
+                    // Anchor següent pregunta
+                    document.getElementById("send-button").scrollIntoView();
+                }
+            }
+        </script>
     </body>
 </html>
