@@ -35,6 +35,131 @@
             }
         </style>
         
+        <script>
+            var elements = document.getElementsByClassName("button");
+            Array.from(elements).forEach(function(element) {
+                element.addEventListener('click', clickButton);
+                element.parent = element.parentNode.id;
+            });
+            var elements = document.getElementsByClassName("complex-button");
+            Array.from(elements).forEach(function(element) {
+                element.addEventListener('click', clickButton);
+                element.parent = element.parentNode.id;
+            });
+
+            var final_JSON = {
+                "subject": "",
+                "number": "",
+                "letter": ""
+            };
+
+            function clickButton(element) {
+                var parent = element.currentTarget.parent;
+                var id = element.currentTarget.id;
+                var final_text = (id.split("-")[0] == "subject" ? $("#" + id + " > .message-header").text() : id.split("-")[1]);
+                var room_text = $("#" + id).find(".room").text();
+
+                if (parent == "subject-container") {
+                    // Canvi de background del button
+                    $(".current-subject").css("background-color", "white");
+                    $("#subject-container .complex-button").removeClass("is-link")
+                    $("#" + id).addClass("is-link");
+                    // Canvi del text al final
+                    $("#subject-final").html(final_text);
+                    $("#classroom-final").html(room_text);
+                    // Canvi JSON
+                    final_JSON["subject"] = final_text;
+                    // Anchor següent pregunta
+                    switchSection("section-2");
+                } else if (parent == "number-container") {
+                    // Canvi de background del button
+                    $("#number-container .button").removeClass("is-link is-light is-active")
+                    $("#" + id).addClass("is-link is-light is-active");
+                    // Canvi del text al final
+                    $("#number-final").html(final_text);
+                    // Canvi JSON
+                    final_JSON["number"] = final_text;
+                    // Anchor següent pregunta
+                    switchSection("section-send");
+                } else if (parent == "letter-container") {
+                    // Canvi de background del button
+                    $("#letter-container .button").removeClass("is-link is-light is-active")
+                    $("#" + id).addClass("is-link is-light is-active");
+                    // Canvi del text al final
+                    $("#letter-final").html(final_text);
+                    // Canvi JSON
+                    final_JSON["letter"] = final_text;
+                    // Anchor següent pregunta
+                    switchSection("section-3");
+                }
+            }
+            
+            function formatDate(d) {
+                var str = "";
+                if (d.getHours() < 10) str += "0";
+                str += d.getHours();
+                str += ":";
+                if (d.getMinutes() < 10) str += "0";
+                str += d.getMinutes();
+                return str;
+            }
+        </script>
+        
+        <script>
+            // Check if user is signed in
+            var api_url = "https://covid-tracability-backend-dev.sandbox.avm99963.com/api/v1/";
+            fetch(api_url + "isSignedIn")
+                .then(response => response.json())
+                .then(data => {
+                    if (!data.payload.signedIn) {
+                        console.log("Not signed in!");
+                        return fetch(api_url + "getAuthUrl");
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    // TODO: redirect here
+                    // alert(data.payload.url);
+                });
+
+            fetch(api_url + "getCurrentClasses")
+                .then(response => response.json())
+                .then(data => {
+                    for (var classe of data.payload.classes) {
+                        console.log(classe);
+                        
+                        var hora_inici = formatDate(new Date(parseInt(classe.begins)*1000));
+                        var hora_final = formatDate(new Date(parseInt(classe.ends)*1000));
+                        var today = new Date().toLocaleDateString();
+                        
+                        // Canvi de final
+                        $("#date-final").text(today)
+                        $("#time-final").text(hora_inici + " - " + hora_final);
+                        
+                        $("#subject-container").append(
+                            "<div class='message complex-button' id='subject-" + classe.subject_id + "-" + classe.room + "'>" + 
+                                "<div class='message-header'>" + classe.friendly_name + "</div>" +
+                                "<div class='message-body'>" +
+                                    "<div>Aula <span class='room'>" + classe.room + "</span></div>" +
+                                    "<div>" + hora_inici + " - " + hora_final + "</div>" +
+                                "</div>" +
+                            "</div>"
+                        );
+                    }
+                    
+                    var elements = document.getElementsByClassName("button");
+                    Array.from(elements).forEach(function(element) {
+                        element.addEventListener('click', clickButton);
+                        element.parent = element.parentNode.id;
+                    });
+                    var elements = document.getElementsByClassName("complex-button");
+                    Array.from(elements).forEach(function(element) {
+                        element.addEventListener('click', clickButton);
+                        element.parent = element.parentNode.id;
+                    });
+                });
+        </script>
+        
         <nav class="navbar is-link">
             <div class="navbar-brand">
                 <div class="navbar-item has-text-weight-bold">Traçabilitat DAFME</div>
@@ -66,43 +191,7 @@
                 </p>
             </div><br>
             -->
-            <div id="subject-container" class="grid buttons">
-                <div class="message complex-button" id="subject-1">
-                    <div class="message-header">Àlgebra lineal</div>
-                    <div class="message-body">
-                        <div>Aula 001</div>
-                        <div>08:00 - 09:00</div>
-                    </div>
-                </div>
-                <div class="message complex-button" id="subject-2">
-                    <div class="message-header">Càlcul I</div>
-                    <div class="message-body">
-                        <div>Aula 002</div>
-                        <div>08:00 - 10:00</div>
-                    </div>
-                </div>
-                <div class="message complex-button" id="subject-3">
-                    <div class="message-header">Topologia</div>
-                    <div class="message-body">
-                        <div>Aula S02</div>
-                        <div>08:00 - 09:00</div>
-                    </div>
-                </div>
-                <div class="message complex-button" id="subject-4">
-                    <div class="message-header">Informàtica</div>
-                    <div class="message-body">
-                        <div>Aula PC1</div>
-                        <div>08:00 - 11:00</div>
-                    </div>
-                </div>
-                <div class="message complex-button" id="subject-5">
-                    <div class="message-header">Àlgebra lineal</div>
-                    <div class="message-body">
-                        <div>Aula 001</div>
-                        <div>08:00 - 09:00</div>
-                    </div>
-                </div>
-            </div><br>
+            <div id="subject-container" class="grid buttons"></div><br>
             
         </section>
 
@@ -160,24 +249,6 @@
             Hi ha errors? <br /><a class="button is-link is-light" href="https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform">Completa el formulari manualment</a>
         </section>
         
-
-        <script>
-            // Check if user is signed in
-            var api_url = "https://covid-tracability-backend-dev.sandbox.avm99963.com/api/v1/";
-            fetch(api_url + "isSignedIn")
-                .then(response => response.json())
-                .then(data => {
-                    if (!data.payload.signedIn) {
-                        console.log("Not signed in!");
-                        return fetch(api_url + "getAuthUrl");
-                    }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // TODO: redirect here
-                    // alert(data.payload.url);
-                });
-        </script>
         <script>
             var current_section = "section-1";
 
@@ -204,9 +275,7 @@
                 "subject-1": "Àlgebra",
                 "subject-2": "Càlcul I",
                 "subject-3": "Topologia",
-                "subject-4": "Informàtica",
-                "subject-5": "Informàtica",
-                "subject-6": "Informàtica",
+                "subject-4": "Informàtica"
             };
             
             function sendForm(data) {
@@ -228,7 +297,7 @@
                 });
              }
              
-             document.getElementById("send-button").addEventListener('click', function (el) {
+             document.getElementById("send-button").addEventListener('click', function (el) {              
                 // TODO: emplenar això amb informació real
                 sendForm({
                     "aula": "001",
@@ -240,57 +309,5 @@
                 });
              });
         </script>
-        <script>
-            var elements = document.getElementsByClassName("button");
-            Array.from(elements).forEach(function(element) {
-                element.addEventListener('click', clickButton);
-                element.parent = element.parentNode.id;
-            });
-            var elements = document.getElementsByClassName("complex-button");
-            Array.from(elements).forEach(function(element) {
-                element.addEventListener('click', clickButton);
-                element.parent = element.parentNode.id;
-            });
-
-            function clickButton(element) {
-                var parent = element.currentTarget.parent;
-                var id = element.currentTarget.id;
-                var final_text = (id.split("-")[0] == "subject" ? subjects_texts[id] : id.split("-")[1]);
-
-                if (parent == "subject-container") {
-                    // Canvi de background del button
-                    $(".current-subject").css("background-color", "white");
-                    $("#subject-container .complex-button").removeClass("is-link")
-                    $("#" + id).addClass("is-link");
-                    // Canvi del text al final
-                    $("#subject-final").html(final_text);
-                    // Canvi JSON
-                    // TODO
-                    // Anchor següent pregunta
-                    switchSection("section-2");
-                } else if (parent == "number-container") {
-                    // Canvi de background del button
-                    $("#number-container .button").removeClass("is-link is-light is-active")
-                    $("#" + id).addClass("is-link is-light is-active");
-                    // Canvi del text al final
-                    $("#number-final").html(final_text);
-                    // Canvi JSON
-                    // TODO
-                    // Anchor següent pregunta
-                    switchSection("section-send");
-                } else if (parent == "letter-container") {
-                    // Canvi de background del button
-                    $("#letter-container .button").removeClass("is-link is-light is-active")
-                    $("#" + id).addClass("is-link is-light is-active");
-                    // Canvi del text al final
-                    $("#letter-final").html(final_text);
-                    // Canvi JSON
-                    // TODO
-                    // Anchor següent pregunta
-                    switchSection("section-3");
-                }
-            }
-        </script>
-
     </body>
 </html>
