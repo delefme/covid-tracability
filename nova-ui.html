@@ -33,6 +33,31 @@
             .section {
                 padding-top: 1rem;
             }
+
+            #dev-mode {
+              background: #d23f31;
+              border: 1px solid #3e2723;
+              box-shadow: 0 0 4px rgba(0,0,0,.14), 0 2px 4px rgba(0,0,0,.28);
+              color: #fff;
+              font-size: 10px;
+              font-weight: 700;
+              right: 20px;
+              line-height: 18px;
+              margin: -9px -50px;
+              opacity: .87;
+              position: absolute;
+              text-align: center;
+              text-shadow: 1px 1px 0 #4e342e;
+              top: 20px;
+              transform: rotate(45deg);
+              width: 100px;
+              z-index: 99;
+              cursor: pointer;
+            }
+
+            #dev-mode.hidden {
+              display: none;
+            }
         </style>
         
         <script>
@@ -103,23 +128,34 @@
                 str += d.getMinutes();
                 return str;
             }
-        </script>
-        
-        <script>
+
+          var api_url;
+
+          window.addEventListener('load', _ => {
             // Check if user is signed in
-            var api_url = "https://covid-tracability-backend-dev.sandbox.avm99963.com/api/v1/";
+            if (localStorage.getItem('devMode') == 'true') {
+              var banner = document.getElementById('dev-mode');
+              banner.addEventListener('click', _ => {
+                localStorage.devMode = 'false';
+                location.reload();
+              });
+              banner.classList.remove('hidden');
+              api_url = localStorage.getItem('apiUrl') || 'https://covid-tracability-backend-dev.sandbox.avm99963.com/api/v1/'
+            } else {
+              api_url = "https://covid-tracability-backend-prod.sandbox.avm99963.com/api/v1/";
+            }
             fetch(api_url + "isSignedIn")
                 .then(response => response.json())
                 .then(data => {
                     if (!data.payload.signedIn) {
                         console.log("Not signed in!");
-                        return fetch(api_url + "getAuthUrl");
+                        fetch(api_url + "getAuthUrl")
+                            .then(response => response.json())
+                            .then(data => {
+                                // TODO: redirect here
+                                // alert(data.payload.url);
+                            });
                     }
-                })
-                .then(response => response.json())
-                .then(data => {
-                    // TODO: redirect here
-                    // alert(data.payload.url);
                 });
 
             fetch(api_url + "getCurrentClasses")
@@ -158,7 +194,10 @@
                         element.parent = element.parentNode.id;
                     });
                 });
+          });
         </script>
+
+        <span id="dev-mode" class="hidden">Dev mode</span>
         
         <nav class="navbar is-link">
             <div class="navbar-brand">
@@ -242,9 +281,9 @@
             <span class="has-text-weight-bold">Hora:</span>
             <span id="time-final">En <strong>algun moment</strong></span><br>
             <span class="has-text-weight-bold">Posició:</span>
-            <span id="number-final">2</span><span id="letter-final">P</span><br><br>
+            <span id="letter-final">P</span><span id="number-final">2</span><br><br>
 
-            <button id="send-button" onclick="js: document.getElementById('send-button').classList.add('is-loading');" class="button is-link is-large">Omple el formulari</button><br><br>
+            <button id="send-button" class="button is-link is-large">Omple el formulari</button><br><br>
             
             Hi ha errors? <br /><a class="button is-link is-light" href="https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform">Completa el formulari manualment</a>
         </section>
@@ -269,15 +308,6 @@
                 }, 75);
             }
 
-        </script>
-        <script>
-            var subjects_texts = {
-                "subject-1": "Àlgebra",
-                "subject-2": "Càlcul I",
-                "subject-3": "Topologia",
-                "subject-4": "Informàtica"
-            };
-            
             function sendForm(data) {
                 // Add subject to user
                 fetch(api_url + "addUserSubject", {
@@ -298,6 +328,8 @@
              }
              
              document.getElementById("send-button").addEventListener('click', function (el) {              
+                document.getElementById('send-button').classList.add('is-loading');
+
                 // TODO: emplenar això amb informació real
                 sendForm({
                     "aula": "001",
