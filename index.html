@@ -6,60 +6,9 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+        <link rel="stylesheet" href="./css/bulma-adjustments.css">
     </head>
     <body>
-        <style>
-            .buttons.grid {
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                
-                justify-content: center;
-                align-items : center;
-            }
-
-            .buttons.grid .button {
-                flex: 1 0 20%;
-                margin: 10px;
-                padding: 40px 20px;
-                line-height: 0px;
-            }
-
-            .buttons.grid .complex-button {
-                flex: 1 0 34%;
-                margin: 15px 10px;
-            }
-            
-            .section {
-                padding-top: 1rem;
-            }
-
-            #dev-mode {
-              background: #d23f31;
-              border: 1px solid #3e2723;
-              box-shadow: 0 0 4px rgba(0,0,0,.14), 0 2px 4px rgba(0,0,0,.28);
-              color: #fff;
-              font-size: 10px;
-              font-weight: 700;
-              right: 20px;
-              line-height: 18px;
-              margin: -9px -50px;
-              opacity: .87;
-              position: absolute;
-              text-align: center;
-              text-shadow: 1px 1px 0 #4e342e;
-              top: 20px;
-              transform: rotate(45deg);
-              width: 100px;
-              z-index: 99;
-              cursor: pointer;
-            }
-
-            #dev-mode.hidden {
-              display: none;
-            }
-        </style>
-        
         <script>
             var elements = document.getElementsByClassName("button");
             Array.from(elements).forEach(function(element) {
@@ -303,15 +252,15 @@
             <button class="button is-link is-light" onclick="switchSection('section-3')">Torna enrere (Número)</button>
             <br/><br/>
             <span class="has-text-weight-bold">Assignatura:</span>
-            <span id="subject-final">Àlgebra Lineal</span><br>
+            <span id="subject-final">ASSIGNATURA ESCOLLIDA</span><br>
             <span class="has-text-weight-bold">Aula:</span>
-            <span id="classroom-final">Dele</span><br>
+            <span id="classroom-final">AULA ESCOLLIDA</span><br>
             <span class="has-text-weight-bold">Data:</span>
-            <span id="date-final">14/3/1879</span><br>
+            <span id="date-final">DD/MM/YYYY</span><br>
             <span class="has-text-weight-bold">Hora:</span>
-            <span id="time-final">En <strong>algun moment</strong></span><br>
+            <span id="time-final">HH:MM - HH:MM</span><br>
             <span class="has-text-weight-bold">Posició:</span>
-            <span id="letter-final">P</span><span id="number-final">2</span><br><br>
+            <span id="letter-final">A</span><span id="number-final">1</span><br><br>
 
             <button id="send-button" class="button is-link is-large">Omple el formulari</button><br><br>
             
