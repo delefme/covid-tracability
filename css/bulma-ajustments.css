@@ -1,0 +1,49 @@
+.buttons.grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    
+    justify-content: center;
+    align-items : center;
+}
+
+.buttons.grid .button {
+    flex: 1 0 20%;
+    margin: 10px;
+    padding: 40px 20px;
+    line-height: 0px;
+}
+
+.buttons.grid .complex-button {
+    flex: 1 0 34%;
+    margin: 15px 10px;
+}
+
+.section {
+    padding-top: 1rem;
+}
+
+#dev-mode {
+  background: #d23f31;
+  border: 1px solid #3e2723;
+  box-shadow: 0 0 4px rgba(0,0,0,.14), 0 2px 4px rgba(0,0,0,.28);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  right: 20px;
+  line-height: 18px;
+  margin: -9px -50px;
+  opacity: .87;
+  position: absolute;
+  text-align: center;
+  text-shadow: 1px 1px 0 #4e342e;
+  top: 20px;
+  transform: rotate(45deg);
+  width: 100px;
+  z-index: 99;
+  cursor: pointer;
+}
+
+#dev-mode.hidden {
+  display: none;
+}
