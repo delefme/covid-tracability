@@ -22,11 +22,16 @@
                 flex: 1 0 20%;
                 margin: 10px;
                 padding: 40px 20px;
+                line-height: 0px;
             }
 
             .buttons.grid .complex-button {
-                flex: 1 0 20%;
+                flex: 1 0 34%;
                 margin: 15px 10px;
+            }
+            
+            .section {
+                padding-top: 1rem;
             }
         </style>
         
@@ -37,6 +42,7 @@
         </nav>
         
         <section id="section-1" class="section">
+            <!--
             <div class="field has-addons">
                 <p class="control">
                     <button class="button">&lt;</button>
@@ -59,7 +65,7 @@
                     <button class="button">&gt;</button>
                 </p>
             </div><br>
-
+            -->
             <div id="subject-container" class="grid buttons">
                 <div class="message complex-button" id="subject-1">
                     <div class="message-header">Àlgebra lineal</div>
@@ -69,24 +75,24 @@
                     </div>
                 </div>
                 <div class="message complex-button" id="subject-2">
-                    <div class="message-header">Àlgebra lineal</div>
+                    <div class="message-header">Càlcul I</div>
                     <div class="message-body">
-                        <div>Aula 001</div>
-                        <div>08:00 - 09:00</div>
+                        <div>Aula 002</div>
+                        <div>08:00 - 10:00</div>
                     </div>
                 </div>
                 <div class="message complex-button" id="subject-3">
-                    <div class="message-header">Àlgebra lineal</div>
+                    <div class="message-header">Topologia</div>
                     <div class="message-body">
-                        <div>Aula 001</div>
+                        <div>Aula S02</div>
                         <div>08:00 - 09:00</div>
                     </div>
                 </div>
                 <div class="message complex-button" id="subject-4">
-                    <div class="message-header">Àlgebra lineal</div>
+                    <div class="message-header">Informàtica</div>
                     <div class="message-body">
-                        <div>Aula 001</div>
-                        <div>08:00 - 09:00</div>
+                        <div>Aula PC1</div>
+                        <div>08:00 - 11:00</div>
                     </div>
                 </div>
             </div><br>
@@ -94,6 +100,7 @@
         </section>
 
         <section id="section-2" class="section" style="display: none;">
+            <button class="button is-link is-light" onclick="switchSection('section-1')">Torna enrere (Classe)</button>
 
             <div id="letter-container" class="buttons grid">
                 <button class="button" id="letter-A">A</button>
@@ -109,12 +116,11 @@
                 <button class="button" id="letter-K">K</button>
                 <button class="button" id="letter-L">L</button>
             </div>
-
-            <button class="button is-link" onclick="switchSection('section-1')">Torna</button>
         </section>
 
         <section id="section-3" class="section" style="display: none;">
-
+            <button class="button is-link is-light" onclick="switchSection('section-2')">Torna enrere (Lletra)</button>
+            
             <div id="number-container" class="buttons grid">
                 <button class="button" id="number-1">1</button>
                 <button class="button" id="number-2">2</button>
@@ -127,11 +133,10 @@
                 <button class="button" id="number-9">9</button>
                 <button class="button" id="number-10">10</button>
             </div>
-
-            <button class="button is-link" onclick="switchSection('section-2')">Torna</button>
         </section>
         <section id="section-send" class="section" style="display: none;">
-
+            <button class="button is-link is-light" onclick="switchSection('section-3')">Torna enrere (Número)</button>
+            <br/><br/>
             <span class="has-text-weight-bold">Assignatura:</span>
             <span id="subject-final">Àlgebra Lineal</span><br>
             <span class="has-text-weight-bold">Aula:</span>
@@ -141,12 +146,11 @@
             <span class="has-text-weight-bold">Hora:</span>
             <span id="time-final">En <strong>algun moment</strong></span><br>
             <span class="has-text-weight-bold">Posició:</span>
-            <span id="letter-final">P</span><span id="number-final">2</span><br><br>
+            <span id="number-final">2</span><span id="letter-final">P</span><br><br>
 
-            <button class="button is-link" onclick="switchSection('section-3')">Torna</button>
-            <button id="send-button" class="button is-link">Envia el formulari</button><br><br>
+            <button id="send-button" onclick="js: document.getElementById('send-button').classList.add('is-loading');" class="button is-link is-large">Omple el formulari</button><br><br>
             
-            Hi ha errors? <a class="myButton" href="https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform">Completa el formulari manualment</a>
+            Hi ha errors? <br /><a class="button is-link is-light" href="https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform">Completa el formulari manualment</a>
         </section>
         
 
@@ -180,9 +184,11 @@
             }
 
             function switchSection(s) {
-                toggleVisibility(current_section);
-                toggleVisibility(s);
-                current_section = s;
+                setTimeout(function(){ 
+                    toggleVisibility(current_section);
+                    toggleVisibility(s);
+                    current_section = s;
+                }, 75);
             }
 
         </script>
@@ -208,7 +214,7 @@
                 .then(json => {
                   console.log("Subject added to user: ", json);
                   // TODO: Redirect to Google Forms
-                  var formulari_link = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1063142948=S03&entry.2115504093=2020-09-14&entry.1749141911=9:00&entry.1827359679=10:00&entry.208184485=Columna+3&entry.1600275159=[Autogenerat+per+delefme/covid-tracability]";
+                  var formulari_link = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform?entry.1063142948=S03&entry.2115504093=2020-09-14&entry.1749141911=9:00&entry.1827359679=10:00&entry.208184485=Columna+3&entry.1600275159=[Autogenerat+per+delefme/covid-tracability]#i1";
                   window.location.href = formulari_link;
                 });
              }
