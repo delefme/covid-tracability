@@ -52,9 +52,11 @@ class TableParser:
 
                     timeSplit = hora.split(':')
 
-                    begins = datetime(year, month, day, int(timeSplit[0]), int(timeSplit[1]))
-                    begins = pytz.timezone(self.TIMEZONE).localize(begins)
-                    ends = begins + timedelta(minutes=durada)
+                    beginsDateTime = datetime(year, month, day, int(timeSplit[0]), int(timeSplit[1]))
+                    beginsDateTime = pytz.timezone(self.TIMEZONE).localize(beginsDateTime)
+                    begins = int(beginsDateTime.timestamp())
+                    endsDateTime = beginsDateTime + timedelta(minutes=durada)
+                    ends = int(endsDateTime.timestamp())
 
                     print(("Afegint " if db != None else "") + assignaturaRaw
                             + ", " + hora
