@@ -333,7 +333,7 @@
                   params.append("entry." + idsFormulari.begins, formatDate(begins));
                   params.append("entry." + idsFormulari.ends, formatDate(ends));
                   params.append("entry." + idsFormulari.rows[final_JSON.letter], 'Columna ' + final_JSON.number);
-                  params.append("entry." + idsFormulari.notes, '[Autogenerat per delefme/covid-tracability -- Assignatura seleccionada: ' + final_JSON.class.friendly_name + ']');
+                  // params.append("entry." + idsFormulari.notes, '[Autogenerat per delefme/covid-tracability -- Assignatura seleccionada: ' + final_JSON.class.friendly_name + ']');
 
                   var formulari_link = formBaseUrl + '?' + params.toString();
                   window.location.href = formulari_link;
