@@ -1,11 +1,155 @@
 <!DOCTYPE html>
+
 <html lang="ca">
     <head>
         <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <!-- Load Jquery -->
+        <meta name="viewport" content="width=device-width, initial-scale=1">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
+    </head>
+    <body>
+        <style>
+            .buttons.grid {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                
+                justify-content: center;
+                align-items : center;
+            }
+
+            .buttons.grid .button {
+                flex: 1 0 20%;
+                margin: 10px;
+                padding: 40px 20px;
+            }
+
+            .buttons.grid .complex-button {
+                flex: 1 0 20%;
+                margin: 15px 10px;
+            }
+        </style>
         
+        <nav class="navbar is-link">
+            <div class="navbar-brand">
+                <div class="navbar-item has-text-weight-bold">Traçabilitat DAFME</div>
+            </div>
+        </nav>
+        
+        <section id="section-1" class="section">
+            <div class="field has-addons">
+                <p class="control">
+                    <button class="button">&lt;</button>
+                </p>
+                <p class="control">
+                    <input type="date" class="button">
+                </p>
+                <p class="control">
+                    <button class="button">&gt;</button>
+                </p>
+            </div>
+            <div class="field has-addons">
+                <p class="control">
+                    <button class="button">&lt;</button>
+                </p>
+                <p class="control">
+                    <input type="button" class="button" value="08:00 - 08:30">
+                </p>
+                <p class="control">
+                    <button class="button">&gt;</button>
+                </p>
+            </div><br>
+
+            <div id="subject-container" class="grid buttons">
+                <div class="message complex-button" id="subject-1">
+                    <div class="message-header">Àlgebra lineal</div>
+                    <div class="message-body">
+                        <div>Aula 001</div>
+                        <div>08:00 - 09:00</div>
+                    </div>
+                </div>
+                <div class="message complex-button" id="subject-2">
+                    <div class="message-header">Àlgebra lineal</div>
+                    <div class="message-body">
+                        <div>Aula 001</div>
+                        <div>08:00 - 09:00</div>
+                    </div>
+                </div>
+                <div class="message complex-button" id="subject-3">
+                    <div class="message-header">Àlgebra lineal</div>
+                    <div class="message-body">
+                        <div>Aula 001</div>
+                        <div>08:00 - 09:00</div>
+                    </div>
+                </div>
+                <div class="message complex-button" id="subject-4">
+                    <div class="message-header">Àlgebra lineal</div>
+                    <div class="message-body">
+                        <div>Aula 001</div>
+                        <div>08:00 - 09:00</div>
+                    </div>
+                </div>
+            </div><br>
+            
+        </section>
+
+        <section id="section-2" class="section" style="display: none;">
+
+            <div id="letter-container" class="buttons grid">
+                <button class="button" id="letter-A">A</button>
+                <button class="button" id="letter-B">B</button>
+                <button class="button" id="letter-C">C</button>
+                <button class="button" id="letter-D">D</button>
+                <button class="button" id="letter-E">E</button>
+                <button class="button" id="letter-F">F</button>
+                <button class="button" id="letter-G">G</button>
+                <button class="button" id="letter-H">H</button>
+                <button class="button" id="letter-I">I</button>
+                <button class="button" id="letter-J">J</button>
+                <button class="button" id="letter-K">K</button>
+                <button class="button" id="letter-L">L</button>
+            </div>
+
+            <button class="button is-link" onclick="switchSection('section-1')">Torna</button>
+        </section>
+
+        <section id="section-3" class="section" style="display: none;">
+
+            <div id="number-container" class="buttons grid">
+                <button class="button" id="number-1">1</button>
+                <button class="button" id="number-2">2</button>
+                <button class="button" id="number-3">3</button>
+                <button class="button" id="number-4">4</button>
+                <button class="button" id="number-5">5</button>
+                <button class="button" id="number-6">6</button>
+                <button class="button" id="number-7">7</button>
+                <button class="button" id="number-8">8</button>
+                <button class="button" id="number-9">9</button>
+                <button class="button" id="number-10">10</button>
+            </div>
+
+            <button class="button is-link" onclick="switchSection('section-2')">Torna</button>
+        </section>
+        <section id="section-send" class="section" style="display: none;">
+
+            <span class="has-text-weight-bold">Assignatura:</span>
+            <span id="subject-final">Àlgebra Lineal</span><br>
+            <span class="has-text-weight-bold">Aula:</span>
+            <span id="classroom-final">Dele</span><br>
+            <span class="has-text-weight-bold">Data:</span>
+            <span id="date-final">14/3/1879</span><br>
+            <span class="has-text-weight-bold">Hora:</span>
+            <span id="time-final">En <strong>algun moment</strong></span><br>
+            <span class="has-text-weight-bold">Posició:</span>
+            <span id="letter-final">P</span><span id="number-final">2</span><br><br>
+
+            <button class="button is-link" onclick="switchSection('section-3')">Torna</button>
+            <button id="send-button" class="button is-link">Envia el formulari</button><br><br>
+            
+            Hi ha errors? <a class="myButton" href="https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform">Completa el formulari manualment</a>
+        </section>
+        
+
         <script>
             // Check if user is signed in
             var api_url = "https://covid-tracability-backend-dev.sandbox.avm99963.com/api/v1/";
@@ -20,188 +164,28 @@
                 .then(response => response.json())
                 .then(data => {
                     // TODO: redirect here
-                    alert(data.payload.url);
+                    // alert(data.payload.url);
                 });
         </script>
-        
-        <style>
-            body {
-                background-color: lightgray;
-            }
-            
-            #outter-container {
-                margin: 40px 20px;
-            }
-            
-            #inner-container {
-                width: 80%;
-                background-color: white;
-                padding: 20px 50px;
-                margin: 0 auto;
-            }
-            
-            .label, .final {
-                font-size: 36px;
-            }
-            
-            .label {
-                padding-top: 50px;
-            }
-            
-            .final {
-                color: gray;
-            }
-            
-            section {
-                padding: 10px 0;
-            }
-            
-            .container {
-                /* flexbox setup */
-                display: -webkit-flex;
-                -webkit-flex-direction: row;
+        <script>
+            var current_section = "section-1";
 
-                display: flex;
-                flex-direction: row;
-                flex-wrap: wrap;
-                
-                justify-content: center;
-                align-items : center;
-                
-                height: 75vh;
-                overflow-y: auto;
-                margin: 50px 0;
+            function toggleVisibility(id) {
+                var x = document.getElementById(id);
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
             }
-            
-            .button {
-                border: solid 2px #26bdff;
-                color: black;
-                font-size: 5vw;
-                                            
-                flex: 1 0 20%;
-                margin: 20px;
-                padding: 40px 20px;
-                
-                vertical-align: middle;
-                text-align: center;
+
+            function switchSection(s) {
+                toggleVisibility(current_section);
+                toggleVisibility(s);
+                current_section = s;
             }
-            
-            .selected {
-                background-color: #c3ddff;
-            }
-            
-            #subject-container .button {
-                text-align: left;
-                flex: 1 0 20%;
-                height: auto;
-            }
-            
-            .current-subject .title {
-                font-size: 18px;
-            }
-            .current-subject .subtitle {
-                font-size: 14px;
-            }
-            
-            #send-button {
-                font-size: 48px;
-                width: 80%;
-                margin: 50px auto;
-                display: block;
-                padding: 50px 30px;
-                background-color: #26bdff;
-                color: white;
-            }
-        </style>
-    </head>
-    
-    <body>
-        <div id="outter-container">
-            <div id="inner-container">
-                <section id="subject-section">
-                    <div id="subject-container" class="container">
-                        <div class="current-subject button" id="subject-1" onclick="js:clickButton(this.parentNode.id, this.id)">
-                            <div class="title">Àlgebra Lineal</div>
-                            <div class="subtitle">Aula 001</div>
-                            <div class="subtitle">9.00 - 10.00</div>
-                        </div>
-                        <div class="current-subject button" id="subject-2">
-                            <div class="title">Àlgebra Lineal</div>
-                            <div class="subtitle">Aula 001</div>
-                            <div class="subtitle">9.00 - 10.00</div>
-                        </div>
-                        <div class="current-subject button" id="subject-3">
-                            <div class="title">Àlgebra Lineal</div>
-                            <div class="subtitle">Aula 001</div>
-                            <div class="subtitle">9.00 - 10.00</div>
-                        </div>
-                        <div class="current-subject button" id="subject-4">
-                            <div class="title">Àlgebra Lineal</div>
-                            <div class="subtitle">Aula 001</div>
-                            <div class="subtitle">9.00 - 10.00</div>
-                        </div>
-                    </div>
-                    <div class="showhide">
-                        <span id="subject-label" class="label">Assignatura (Aula):</span>
-                        <span id="subject-final" class="final"></span>
-                    </div>
-                </section>
-                <section id="number-section">
-                    <div id="number-container" class="container">
-                        <div class="number button" id="number-1">1</div>
-                        <div class="number button" id="number-2">2</div>
-                        <div class="number button" id="number-3">3</div>
-                        <div class="number button" id="number-4">4</div>
-                        <div class="number button" id="number-5">5</div>
-                        <div class="number button" id="number-6">6</div>
-                        <div class="number button" id="number-7">7</div>
-                        <div class="number button" id="number-8">8</div>
-                        <div class="number button" id="number-9">9</div>
-                        <div class="number button" id="number-10">10</div>
-                    </div>
-                    <div class="showhide">
-                        <span id="number-label" class="label">Número de seient:</span>
-                        <span id="number-final" class="final"></span>
-                    </div>
-                </section>
-                <section id="letter-section">
-                    <div id="letter-container" class="container">
-                        <div class="letter button" id="letter-A">A</div>
-                        <div class="letter button" id="letter-B">B</div>
-                        <div class="letter button" id="letter-C">C</div>
-                        <div class="letter button" id="letter-D">D</div>
-                        <div class="letter button" id="letter-E">E</div>
-                        <div class="letter button" id="letter-F">F</div>
-                        <div class="letter button" id="letter-G">G</div>
-                        <div class="letter button" id="letter-H">H</div>
-                        <div class="letter button" id="letter-I">I</div>
-                        <div class="letter button" id="letter-J">J</div>
-                        <div class="letter button" id="letter-K">K</div>
-                        <div class="letter button" id="letter-L">L</div>
-                    </div>
-                    <div class="showhide">
-                        <span id="letter-label" class="label">Lletra de seient:</span>
-                        <span id="letter-final" class="final"></span>
-                    </div>
-                </section>
-                <section id="date-section">
-                    <div class="showhide">
-                        <span id="date-label" class="label">Data:</span>
-                        <span id="date-final" class="final">16/01/2020</span>
-                    </div>
-                </section>
-                <section id="hour-section">
-                    <div class="showhide">
-                        <span id="hour-label" class="label">Hora:</span>
-                        <span id="hour-final" class="final">09.00 - 10.00</span>
-                    </div>
-                </section>
-                <button id="send-button">
-                    <span>Anar al formulari</span>
-                </button>
-            </div>
-        </div>
-        
+
+        </script>
         <script>
             var subjects_texts = {
                 "subject-1": "Àlgebra",
@@ -241,55 +225,57 @@
                 });
              });
         </script>
-        
         <script>
             var elements = document.getElementsByClassName("button");
             Array.from(elements).forEach(function(element) {
                 element.addEventListener('click', clickButton);
                 element.parent = element.parentNode.id;
-                console.log(element.id);
             });
-            
+            var elements = document.getElementsByClassName("complex-button");
+            Array.from(elements).forEach(function(element) {
+                element.addEventListener('click', clickButton);
+                element.parent = element.parentNode.id;
+            });
+
             function clickButton(element) {
                 var parent = element.currentTarget.parent;
                 var id = element.currentTarget.id;
                 var final_text = (id.split("-")[0] == "subject" ? subjects_texts[id] : id.split("-")[1]);
-                
-                console.log(parent);
-                console.log(id);
-                
+
                 if (parent == "subject-container") {
                     // Canvi de background del button
                     $(".current-subject").css("background-color", "white");
-                    $("#" + id).css("background-color", "#c3ddff");
+                    $("#subject-container .complex-button").removeClass("is-link")
+                    $("#" + id).addClass("is-link");
                     // Canvi del text al final
-                    $("#" + parent).parent().find(".final").html(final_text);
+                    $("#subject-final").html(final_text);
                     // Canvi JSON
                     // TODO
                     // Anchor següent pregunta
-                    document.getElementById("subject-label").scrollIntoView();
+                    switchSection("section-2");
                 } else if (parent == "number-container") {
                     // Canvi de background del button
-                    $(".number").css("background-color", "white");
-                    $("#" + id).css("background-color", "#c3ddff");
+                    $("#number-container .button").removeClass("is-link is-light is-active")
+                    $("#" + id).addClass("is-link is-light is-active");
                     // Canvi del text al final
-                    $("#" + parent).parent().find(".final").html(final_text);
+                    $("#number-final").html(final_text);
                     // Canvi JSON
                     // TODO
                     // Anchor següent pregunta
-                    document.getElementById("number-label").scrollIntoView();
+                    switchSection("section-send");
                 } else if (parent == "letter-container") {
                     // Canvi de background del button
-                    $(".letter").css("background-color", "white");
-                    $("#" + id).css("background-color", "#c3ddff");
+                    $("#letter-container .button").removeClass("is-link is-light is-active")
+                    $("#" + id).addClass("is-link is-light is-active");
                     // Canvi del text al final
-                    $("#" + parent).parent().find(".final").html(final_text);
+                    $("#letter-final").html(final_text);
                     // Canvi JSON
                     // TODO
                     // Anchor següent pregunta
-                    document.getElementById("letter-label").scrollIntoView();
+                    switchSection("section-3");
                 }
             }
         </script>
+
     </body>
 </html>
