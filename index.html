@@ -134,6 +134,11 @@
             })
                 .then(response => response.json())
                 .then(data => {
+                    if (data.payload.classes.length == 0) {
+                        document.getElementById('no-subjects').classList.remove('hidden');
+                    }
+
+
                     for (var classe of data.payload.classes) {
                         console.log(classe);
 
@@ -219,6 +224,7 @@
             </div><br>
             -->
             <div id="subject-container" class="grid buttons"></div><br>
+            <div id="no-subjects" class="hidden">No s'està impartint cap classe en aquests moments.</div>
             
         </section>
 

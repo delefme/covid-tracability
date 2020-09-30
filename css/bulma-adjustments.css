@@ -1,3 +1,7 @@
+html {
+    min-width: auto;
+}
+
 .buttons.grid {
     display: flex;
     flex-direction: row;
@@ -24,26 +28,26 @@
 }
 
 #dev-mode {
-  background: #d23f31;
-  border: 1px solid #3e2723;
-  box-shadow: 0 0 4px rgba(0,0,0,.14), 0 2px 4px rgba(0,0,0,.28);
-  color: #fff;
-  font-size: 10px;
-  font-weight: 700;
-  right: 20px;
-  line-height: 18px;
-  margin: -9px -50px;
-  opacity: .87;
-  position: absolute;
-  text-align: center;
-  text-shadow: 1px 1px 0 #4e342e;
-  top: 20px;
-  transform: rotate(45deg);
-  width: 100px;
-  z-index: 99;
-  cursor: pointer;
+    background: #d23f31;
+    border: 1px solid #3e2723;
+    box-shadow: 0 0 4px rgba(0,0,0,.14), 0 2px 4px rgba(0,0,0,.28);
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    right: 20px;
+    line-height: 18px;
+    margin: -9px -50px;
+    opacity: .87;
+    position: absolute;
+    text-align: center;
+    text-shadow: 1px 1px 0 #4e342e;
+    top: 20px;
+    transform: rotate(45deg);
+    width: 100px;
+    z-index: 99;
+    cursor: pointer;
 }
 
-#dev-mode.hidden {
-  display: none;
+.hidden {
+    display: none;
 }
