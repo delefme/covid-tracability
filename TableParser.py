@@ -44,8 +44,7 @@ class TableParser:
 
                 classes = td_hora['class'];
                 if td_hora.has_attr('class') and not td_hora['class'][0] in self.EMPTY_CELL_CLASSES:
-                    assignaturaRaw = td_hora.get_text().strip()
-                    assignatura = assignaturaRaw.lower()
+                    assignatura = td_hora.get_text().strip()
                     aulaRaw = table.find_all("th")[column].get_text().strip()
                     aula = p.match(aulaRaw).group(1)
                     durada = int(td_hora.get("rowspan"))*30
