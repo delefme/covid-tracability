@@ -1,0 +1,20 @@
+{
+  "short_name": "Seients DAFME",
+  "name": "App per la traçabilitat del COVID a la FME",
+  "icons": [
+    {
+      "src": "images/icon-128.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    },
+    {
+      "src": "images/icon-64.png",
+      "type": "image/png",
+      "sizes": "128x128"
+    }
+  ],
+  "background_color": "#ffffff",
+  "theme_color": "#ffffff",
+  "display": "fullscreen",
+  "start_url": "index.html?utm_source=homescreen"
+}
