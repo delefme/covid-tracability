@@ -57,7 +57,7 @@ class TableParser:
                     endsDateTime = beginsDateTime + timedelta(minutes=durada)
                     ends = int(endsDateTime.timestamp())
 
-                    print(("Afegint " if db != None else "") + assignaturaRaw
+                    print(("Afegint " if db != None else "") + assignatura
                             + ", " + hora
                             + ", " + str(durada) + "mins"
                             + ", " + aula)
