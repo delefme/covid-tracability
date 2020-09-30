@@ -41,7 +41,7 @@
               var begins = new Date(parseInt(final_JSON.class.begins)*1000);
               var ends = new Date(parseInt(final_JSON.class.ends)*1000);
 
-              document.getElementById('subject-final').textContent = final_JSON.class.friendly_name;
+              document.getElementById('subject-final').textContent = final_JSON.class.friendly_name || final_JSON.class.calendar_name;
               document.getElementById('classroom-final').textContent = final_JSON.class.room;
               document.getElementById('date-final').textContent = begins.toLocaleDateString();
               document.getElementById('time-final').textContent = formatDate(begins) + ' - ' + formatDate(ends);
@@ -147,7 +147,7 @@
 
                         var header = document.createElement('div');
                         header.classList.add('message-header');
-                        header.textContent = classe.friendly_name;
+                        header.textContent = classe.friendly_name || classe.calendar_name;
 
                         var body = document.createElement('div');
                         body.classList.add('message-body');
@@ -342,7 +342,7 @@
                   params.append("entry." + idsFormulari.begins, formatDate(begins));
                   params.append("entry." + idsFormulari.ends, formatDate(ends));
                   params.append("entry." + idsFormulari.rows[final_JSON.letter], 'Columna ' + final_JSON.number);
-                  // params.append("entry." + idsFormulari.notes, '[Autogenerat per delefme/covid-tracability -- Assignatura seleccionada: ' + final_JSON.class.friendly_name + ']');
+                  // params.append("entry." + idsFormulari.notes, '[Autogenerat per delefme/covid-tracability -- Assignatura seleccionada: ' + (final_JSON.class.friendly_name || final_JSON.class.calendar_name) + ']');
 
                   var formulari_link = formBaseUrl + '?' + params.toString() + '#i1';
                   window.location.href = formulari_link;
