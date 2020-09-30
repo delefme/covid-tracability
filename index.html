@@ -124,7 +124,7 @@
             })
                 .then(response => response.json())
                 .then(data => {
-                    for (var classe of data.payload.classes) {
+                    for (var [i, classe] of data.payload.classes.entries()) {
                         console.log(classe);
 
                         var hora_inici = formatDate(new Date(parseInt(classe.begins)*1000));
@@ -145,6 +145,12 @@
                         var div1 = document.createElement('div');
                         var span = document.createElement('span');
                         span.textContent = classe.room;
+
+                        if (i > 0 && data.payload.classes[i-1].friendly_name == classe.friendly_name) {
+                            div1.classList.add('has-text-danger', 'has-text-weight-bold');
+                        } else if (data.payload.classes.length >= i && data.payload.classes[i+1].friendly_name == classe.friendly_name) {
+                            div1.classList.add('has-text-danger', 'has-text-weight-bold');
+                        }
 
                         div1.textContent = 'Aula ';
                         div1.appendChild(span);
@@ -271,7 +277,7 @@
 
             function toggleVisibility(id) {
                 var x = document.getElementById(id);
-                if (x.style.display === "none") {
+                if (x.style.display == "none") {
                     x.style.display = "block";
                 } else {
                     x.style.display = "none";
