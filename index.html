@@ -136,6 +136,8 @@
                 .then(data => {
                     if (data.payload.classes.length == 0) {
                         document.getElementById('no-subjects').classList.remove('hidden');
+                    } else {
+                        document.getElementById('fme-maps-container').classList.remove('hidden');
                     }
 
 
@@ -223,8 +225,25 @@
                 </p>
             </div><br>
             -->
-            <div id="subject-container" class="grid buttons"></div><br>
+            <div id="subject-container" class="grid buttons"></div>
             <div id="no-subjects" class="hidden">No s'està impartint cap classe en aquests moments.</div>
+            <div id="fme-maps-container" class="hidden">
+              <h4>Mapes de les aules de l'FME</h4>
+              <div class="maps">
+                <div class="map">
+                  <img src="img/ps.png">
+                  <div class="map--label">Planta <b>-1</b></div>
+                </div>
+                <div class="map">
+                  <img src="img/p0.png">
+                  <div class="map--label">Planta <b>0</b></div>
+                </div>
+                <div class="map">
+                  <img src="img/p1.png">
+                  <div class="map--label">Planta <b>1</b></div>
+                </div>
+              </div>
+            </div>
             
         </section>
 
