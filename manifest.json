@@ -1,6 +1,7 @@
 {
   "short_name": "Seients DAFME",
-  "name": "App per la traçabilitat del COVID a la FME",
+  "name": "Seients DAFME",
+  "description": "App per la traçabilitat del COVID a la FME",
   "icons": [
     {
       "src": "images/icon-128.png",
