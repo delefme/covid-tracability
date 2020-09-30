@@ -20,10 +20,6 @@
     </head>
     <body>
         <script>
-String.prototype.capitalize = function() {
-    return this.charAt(0).toUpperCase() + this.slice(1);
-}
-
             var elements = document.getElementsByClassName("button");
             Array.from(elements).forEach(function(element) {
                 element.addEventListener('click', clickButton);
@@ -151,7 +147,7 @@ String.prototype.capitalize = function() {
 
                         var header = document.createElement('div');
                         header.classList.add('message-header');
-                        header.textContent = classe.friendly_name.capitalize() || classe.calendar_name.capitalize();
+                        header.textContent = classe.friendly_name || classe.calendar_name;
 
                         var body = document.createElement('div');
                         body.classList.add('message-body');
