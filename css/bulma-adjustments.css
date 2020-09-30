@@ -23,10 +23,6 @@
     padding-top: 1rem;
 }
 
-.message-header {
-    text-transform:capitalize;
-} 
-
 #dev-mode {
   background: #d23f31;
   border: 1px solid #3e2723;
