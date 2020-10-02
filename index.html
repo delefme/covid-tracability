@@ -164,7 +164,7 @@
 
                         if (i > 0 && data.payload.classes[i-1].friendly_name == classe.friendly_name) {
                             div1.classList.add('has-text-danger', 'has-text-weight-bold');
-                        } else if (data.payload.classes.length >= i && data.payload.classes[i+1].friendly_name == classe.friendly_name) {
+                        } else if (i < data.payload.classes.length - 1 && data.payload.classes[i+1].friendly_name == classe.friendly_name) {
                             div1.classList.add('has-text-danger', 'has-text-weight-bold');
                         }
 
