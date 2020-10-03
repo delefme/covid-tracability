@@ -141,8 +141,6 @@
                     }
 
                     for (var [i, classe] of data.payload.classes.entries()) {
-                        console.log(classe);
-
                         var hora_inici = formatDate(new Date(parseInt(classe.begins)*1000));
                         var hora_final = formatDate(new Date(parseInt(classe.ends)*1000));
                         
@@ -162,9 +160,9 @@
                         var span = document.createElement('span');
                         span.textContent = classe.room;
 
-                        if (i > 0 && data.payload.classes[i-1].friendly_name == classe.friendly_name) {
+                        if (i > 0 && data.payload.classes[i-1].calendar_name == classe.calendar_name) {
                             div1.classList.add('has-text-danger', 'has-text-weight-bold');
-                        } else if (i < data.payload.classes.length - 1 && data.payload.classes[i+1].friendly_name == classe.friendly_name) {
+                        } else if (i < data.payload.classes.length - 1 && data.payload.classes[i+1].calendar_name == classe.calendar_name) {
                             div1.classList.add('has-text-danger', 'has-text-weight-bold');
                         }
 
