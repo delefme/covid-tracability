@@ -1,19 +1,10 @@
 
 var current_section = "section-1";
 
-function toggleVisibility(id) {
-    var x = document.getElementById(id);
-    if (x.style.display == "none") {
-        x.style.display = "block";
-    } else {
-        x.style.display = "none";
-    }
-}
-
 function switchSection(s) {
     setTimeout(function(){ 
-        toggleVisibility(current_section);
-        toggleVisibility(s);
+        document.getElementById(current_section).classList.add('hidden');
+        document.getElementById(s).classList.remove('hidden');
         current_section = s;
     }, 75);
 }
