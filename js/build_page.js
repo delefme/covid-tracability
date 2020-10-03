@@ -266,7 +266,7 @@ function addEventListeners() {
     });
 
     document.getElementById("send-button").addEventListener('click', function (el) {
-        el.classList.add('is-loading');
+        document.getElementById("send-button").classList.add('is-loading');
         sendForm();
     });
 }
