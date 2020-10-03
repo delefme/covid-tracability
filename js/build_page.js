@@ -24,6 +24,9 @@ const idsFormulari = {
 
 const formBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform";
 
+const MIN_HOUR = 8;
+const MAX_HOUR = 20;
+
 var final_JSON = {
     "class": null,
     "number": "",
@@ -33,6 +36,8 @@ var final_JSON = {
 var current_section = "section-1";
 
 var repeated_subjects;
+var current_time;
+
 
 function fillInSummary() {
     var begins = new Date(parseInt(final_JSON.class.begins)*1000);
@@ -41,7 +46,7 @@ function fillInSummary() {
     document.getElementById('subject-final').textContent = final_JSON.class.friendly_name || final_JSON.class.calendar_name;
     document.getElementById('classroom-final').textContent = final_JSON.class.room;
     document.getElementById('date-final').textContent = begins.toLocaleDateString();
-    document.getElementById('time-final').textContent = formatDate(begins) + ' - ' + formatDate(ends);
+    document.getElementById('time-final').textContent = formatTime(begins) + ' - ' + formatTime(ends);
     document.getElementById('letter-final').textContent = final_JSON.letter;
     document.getElementById('number-final').textContent = final_JSON.number;
 }
@@ -108,8 +113,8 @@ function findRepeatedSubjects(classes) {
 
 function buildSubjectContainer(classes, repeated) {
     for (var classe of classes) {
-        var hora_inici = formatDate(new Date(parseInt(classe.begins)*1000));
-        var hora_final = formatDate(new Date(parseInt(classe.ends)*1000));
+        var hora_inici = formatTime(new Date(parseInt(classe.begins)*1000));
+        var hora_final = formatTime(new Date(parseInt(classe.ends)*1000));
 
         var classeDiv = document.createElement('div');
         classeDiv.classList.add('message', 'complex-button');
@@ -158,13 +163,91 @@ function buildSubjectContainer(classes, repeated) {
     });
 }
 
-function formatDate(d) {
-    var str = "";
+function getDefaultTime() {
+    var time = new Date();
+    time.setSeconds(0);
+    if (time.getMinutes() < 30) time.setMinutes(0);
+    else time.setMinutes(30);
+    if (time.getHours() < MIN_HOUR) {
+        time.setHours(MIN_HOUR);
+        time.setMinutes(0);
+    }
+    if (time.getHours() >= MAX_HOUR) {
+        time.setHours(MAX_HOUR - 1);
+        time.setMinutes(30);
+    }
+    return time
+}
+
+function buildTimeSelector(date) {
+    document.getElementById("date-selector").value = formatDate(date);
+    var end_time = new Date(date.getTime() + 30*60000);  // 1 min = 60000 ms
+    document.getElementById("time-selector").value = formatTime(date) + " - " + formatTime(end_time);
+}
+
+function addDateEventListeners(date) {
+    document.getElementById("date-prev").addEventListener('click', function (el) {
+        current_time = new Date(current_time.getTime() - 24*60*60000);
+        buildTimeSelector(current_time);
+        fetchClasses();
+    });
+    document.getElementById("date-next").addEventListener('click', function (el) {
+        current_time = new Date(current_time.getTime() + 24*60*60000);
+        buildTimeSelector(current_time);
+        fetchClasses();
+    });
+    document.getElementById("time-prev").addEventListener('click', function (el) {
+        current_time = new Date(current_time.getTime() - 30*60000);
+        if (current_time.getHours() < MIN_HOUR) {
+            current_time = new Date(current_time.getTime() - 24*60*60000);
+            current_time.setHours(MAX_HOUR - 1);
+            current_time.setMinutes(30);
+        }
+        buildTimeSelector(current_time);
+        fetchClasses();
+    });
+    document.getElementById("time-next").addEventListener('click', function (el) {
+        current_time = new Date(current_time.getTime() + 30*60000);
+        if (current_time.getHours() >= MAX_HOUR) {
+            current_time = new Date(current_time.getTime() + 24*60*60000);
+            current_time.setHours(MIN_HOUR);
+            current_time.setMinutes(0);
+        }
+        buildTimeSelector(current_time);
+        fetchClasses();
+    });
+}
+
+function formatTime(d) {
+    return d.toLocaleTimeString("ca", {timeStyle: 'short'});
+    /* var str = "";
     str += d.getHours();
     str += ":";
     if (d.getMinutes() < 10) str += "0";
-    str += d.getMinutes();
-    return str;
+     str += d.getMinutes();
+    return str; */
+}
+
+function formatDate(d) {
+    return d.toLocaleDateString("ca");
+}
+
+function fetchClasses() {
+    fetch(api_url + "getCurrentClasses", {
+        "mode": "cors",
+        "credentials": "include"
+    })
+        .then(response => response.json())
+        .then(data => {
+            if (data.payload.classes.length == 0) {
+                document.getElementById('no-subjects').classList.remove('hidden');
+            } else {
+                repeated_subjects = findRepeatedSubjects(data.payload.classes);
+                buildSubjectContainer(data.payload.classes, repeated_subjects);
+                document.getElementById('fme-maps-container').classList.remove('hidden');
+            }
+
+        });
 }
 
 function onPageLoad() {
@@ -181,6 +264,10 @@ function onPageLoad() {
     } else {
         api_url = "https://covid-tracability-backend-prod.sandbox.avm99963.com/api/v1/";
     }
+
+    current_time = getDefaultTime();
+    buildTimeSelector(current_time);
+
     fetch(api_url + "isSignedIn", {
         "mode": "cors",
         "credentials": "include"
@@ -202,21 +289,7 @@ function onPageLoad() {
             }
         });
 
-    fetch(api_url + "getCurrentClasses", {
-        "mode": "cors",
-        "credentials": "include"
-    })
-        .then(response => response.json())
-        .then(data => {
-            if (data.payload.classes.length == 0) {
-                document.getElementById('no-subjects').classList.remove('hidden');
-            } else {
-                repeated_subjects = findRepeatedSubjects(data.payload.classes);
-                buildSubjectContainer(data.payload.classes, repeated_subjects);
-                document.getElementById('fme-maps-container').classList.remove('hidden');
-            }
-
-        });
+    fetchClasses();
 }
 
 function sendForm() {
@@ -239,8 +312,8 @@ function sendForm() {
             var params = new URLSearchParams();
             params.append("entry." + idsFormulari.room, final_JSON.class.room); // class, number, letter
             params.append("entry." + idsFormulari.day, begins.getFullYear().toString() + '-' + (begins.getMonth() + 1).toString().padStart(2, "0") + '-' + begins.getDate().toString().padStart(2, "0"));
-            params.append("entry." + idsFormulari.begins, formatDate(begins));
-            params.append("entry." + idsFormulari.ends, formatDate(ends));
+            params.append("entry." + idsFormulari.begins, formatTime(begins));
+            params.append("entry." + idsFormulari.ends, formatTime(ends));
             params.append("entry." + idsFormulari.rows[final_JSON.letter], 'Columna ' + final_JSON.number);
             // params.append("entry." + idsFormulari.notes, '[Autogenerat per delefme/covid-tracability -- Assignatura seleccionada: ' + (final_JSON.class.friendly_name || final_JSON.class.calendar_name) + ']');
 
@@ -269,6 +342,8 @@ function addEventListeners() {
         document.getElementById("send-button").classList.add('is-loading');
         sendForm();
     });
+
+    addDateEventListeners();
 }
 
 addEventListeners();
