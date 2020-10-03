@@ -32,6 +32,7 @@ var final_JSON = {
 
 var current_section = "section-1";
 
+var repeated_subjects;
 
 function fillInSummary() {
     var begins = new Date(parseInt(final_JSON.class.begins)*1000);
@@ -56,6 +57,13 @@ function clickButton(element) {
         btn.classList.add("is-link");
         // Canvi JSON
         final_JSON["class"] = selectedClass;
+        // Missatge advertència classe repetida
+        if (repeated_subjects.has(selectedClass.id)) {
+            document.getElementById('repeated-subject-warning').classList.remove('hidden');
+            document.getElementById('repeated-subject-warning-class').textContent = selectedClass.room;
+        } else {
+            document.getElementById('repeated-subject-warning').classList.add('hidden');
+        }
         // Anchor següent pregunta
         switchSection("section-2");
     } else if (parent == "number-container") {
@@ -87,8 +95,19 @@ function switchSection(s) {
     }, 75);
 }
 
-function buildSubjectContainer(classes) {
+function findRepeatedSubjects(classes) {
+    var rep = new Set();
     for (var [i, classe] of classes.entries()) {
+        if (i > 0 && classes[i-1].calendar_name == classe.calendar_name) {
+            rep.add(classe.id);
+            rep.add(classes[i-1].id);
+        }
+    }
+    return rep;
+}
+
+function buildSubjectContainer(classes, repeated) {
+    for (var classe of classes) {
         var hora_inici = formatDate(new Date(parseInt(classe.begins)*1000));
         var hora_final = formatDate(new Date(parseInt(classe.ends)*1000));
 
@@ -108,9 +127,7 @@ function buildSubjectContainer(classes) {
         var span = document.createElement('span');
         span.textContent = classe.room;
 
-        if (i > 0 && classes[i-1].calendar_name == classe.calendar_name) {
-            div1.classList.add('has-text-danger', 'has-text-weight-bold');
-        } else if (i < classes.length - 1 && classes[i+1].calendar_name == classe.calendar_name) {
+        if (repeated.has(classe.id)) {
             div1.classList.add('has-text-danger', 'has-text-weight-bold');
         }
 
@@ -194,7 +211,8 @@ function onPageLoad() {
             if (data.payload.classes.length == 0) {
                 document.getElementById('no-subjects').classList.remove('hidden');
             } else {
-                buildSubjectContainer(data.payload.classes);
+                repeated_subjects = findRepeatedSubjects(data.payload.classes);
+                buildSubjectContainer(data.payload.classes, repeated_subjects);
                 document.getElementById('fme-maps-container').classList.remove('hidden');
             }
 
@@ -248,7 +266,7 @@ function addEventListeners() {
     });
 
     document.getElementById("send-button").addEventListener('click', function (el) {
-        document.getElementById('send-button').classList.add('is-loading');
+        el.classList.add('is-loading');
         sendForm();
     });
 }
