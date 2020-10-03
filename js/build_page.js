@@ -25,7 +25,7 @@ const idsFormulari = {
 const formBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform";
 
 const MIN_HOUR = 8;
-const MAX_HOUR = 20;
+const MAX_HOUR = 14;
 
 var final_JSON = {
     "class": null,
