@@ -1,20 +1,37 @@
 
-var elements = document.getElementsByClassName("button");
-Array.from(elements).forEach(function(element) {
-    element.addEventListener('click', clickButton);
-    element.parent = element.parentNode.id;
-});
-var elements = document.getElementsByClassName("complex-button");
-Array.from(elements).forEach(function(element) {
-    element.addEventListener('click', clickButton);
-    element.parent = element.parentNode.id;
-});
+
+const idsFormulari = {
+    room: "1063142948",
+    day: "2115504093",
+    begins: "1749141911",
+    ends: "1827359679",
+    rows: {
+        A: "208184485",
+        B: "1077148310",
+        C: "642851281",
+        D: "1686039024",
+        E: "697835787",
+        F: "1511799646",
+        G: "809853432",
+        H: "182597499",
+        I: "1890539481",
+        J: "529159478",
+        K: "1615241874",
+        L: "1334263875"
+    },
+    notes: "1600275159"
+};
+
+const formBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform";
 
 var final_JSON = {
     "class": null,
     "number": "",
     "letter": ""
 };
+
+var current_section = "section-1";
+
 
 function fillInSummary() {
     var begins = new Date(parseInt(final_JSON.class.begins)*1000);
@@ -62,6 +79,68 @@ function clickButton(element) {
     }
 }
 
+function switchSection(s) {
+    setTimeout(function(){ 
+        document.getElementById(current_section).classList.add('hidden');
+        document.getElementById(s).classList.remove('hidden');
+        current_section = s;
+    }, 75);
+}
+
+function buildSubjectContainer(classes) {
+    for (var [i, classe] of classes.entries()) {
+        var hora_inici = formatDate(new Date(parseInt(classe.begins)*1000));
+        var hora_final = formatDate(new Date(parseInt(classe.ends)*1000));
+
+        var classeDiv = document.createElement('div');
+        classeDiv.classList.add('message', 'complex-button');
+        classeDiv.id = 'subject-' + classe.subject_id + '-' + classe.room;
+        classeDiv.setAttribute('data-class', JSON.stringify(classe));
+
+        var header = document.createElement('div');
+        header.classList.add('message-header');
+        header.textContent = classe.friendly_name || classe.calendar_name;
+
+        var body = document.createElement('div');
+        body.classList.add('message-body');
+
+        var div1 = document.createElement('div');
+        var span = document.createElement('span');
+        span.textContent = classe.room;
+
+        if (i > 0 && classes[i-1].calendar_name == classe.calendar_name) {
+            div1.classList.add('has-text-danger', 'has-text-weight-bold');
+        } else if (i < classes.length - 1 && classes[i+1].calendar_name == classe.calendar_name) {
+            div1.classList.add('has-text-danger', 'has-text-weight-bold');
+        }
+
+        div1.textContent = 'Aula ';
+        div1.appendChild(span);
+
+        var div2 = document.createElement('div');
+        div2.textContent = hora_inici + ' - ' + hora_final;
+
+        body.appendChild(div1);
+        body.appendChild(div2);
+
+        classeDiv.appendChild(header);
+        classeDiv.appendChild(body);
+
+        document.getElementById("subject-container").appendChild(classeDiv);
+    }
+
+    var elements = document.getElementsByClassName("button");
+    Array.from(elements).forEach(function(element) {
+        element.addEventListener('click', clickButton);
+        element.parent = element.parentNode.id;
+    });
+    var elements = document.getElementsByClassName("complex-button");
+    Array.from(elements).forEach(function(element) {
+        element.addEventListener('click', clickButton);
+        element.parent = element.parentNode.id;
+    });
+}
+
 function formatDate(d) {
     var str = "";
     str += d.getHours();
@@ -71,9 +150,8 @@ function formatDate(d) {
     return str;
 }
 
-var api_url;
+function onPageLoad() {
 
-window.addEventListener('load', _ => {
     // Check if user is signed in
     if (localStorage.getItem('devMode') == 'true') {
         var banner = document.getElementById('dev-mode');
@@ -116,60 +194,63 @@ window.addEventListener('load', _ => {
             if (data.payload.classes.length == 0) {
                 document.getElementById('no-subjects').classList.remove('hidden');
             } else {
+                buildSubjectContainer(data.payload.classes);
                 document.getElementById('fme-maps-container').classList.remove('hidden');
             }
 
-            for (var [i, classe] of data.payload.classes.entries()) {
-                var hora_inici = formatDate(new Date(parseInt(classe.begins)*1000));
-                var hora_final = formatDate(new Date(parseInt(classe.ends)*1000));
-
-                var classeDiv = document.createElement('div');
-                classeDiv.classList.add('message', 'complex-button');
-                classeDiv.id = 'subject-' + classe.subject_id + '-' + classe.room;
-                classeDiv.setAttribute('data-class', JSON.stringify(classe));
-
-                var header = document.createElement('div');
-                header.classList.add('message-header');
-                header.textContent = classe.friendly_name || classe.calendar_name;
-
-                var body = document.createElement('div');
-                body.classList.add('message-body');
-
-                var div1 = document.createElement('div');
-                var span = document.createElement('span');
-                span.textContent = classe.room;
-
-                if (i > 0 && data.payload.classes[i-1].calendar_name == classe.calendar_name) {
-                    div1.classList.add('has-text-danger', 'has-text-weight-bold');
-                } else if (i < data.payload.classes.length - 1 && data.payload.classes[i+1].calendar_name == classe.calendar_name) {
-                    div1.classList.add('has-text-danger', 'has-text-weight-bold');
-                }
-
-                div1.textContent = 'Aula ';
-                div1.appendChild(span);
-
-                var div2 = document.createElement('div');
-                div2.textContent = hora_inici + ' - ' + hora_final;
-
-                body.appendChild(div1);
-                body.appendChild(div2);
-
-                classeDiv.appendChild(header);
-                classeDiv.appendChild(body);
-
-                document.getElementById("subject-container").appendChild(classeDiv);
-            }
-
-            var elements = document.getElementsByClassName("button");
-            Array.from(elements).forEach(function(element) {
-                element.addEventListener('click', clickButton);
-                element.parent = element.parentNode.id;
-            });
-            var elements = document.getElementsByClassName("complex-button");
-            Array.from(elements).forEach(function(element) {
-                element.addEventListener('click', clickButton);
-                element.parent = element.parentNode.id;
-            });
         });
-});
+}
 
+function sendForm() {
+    // Add subject to user
+    fetch(api_url + "addUserSubject", {
+        "method": "POST",
+        "body": JSON.stringify({
+            subject: final_JSON.class.subject_id
+        }),
+        "mode": "cors",
+        "credentials": "include"
+    })
+        .then(res => res.json())
+        .then(json => {
+            console.log("Subject added to user: ", json);
+
+            var begins = new Date(parseInt(final_JSON.class.begins)*1000);
+            var ends = new Date(parseInt(final_JSON.class.ends)*1000);
+
+            var params = new URLSearchParams();
+            params.append("entry." + idsFormulari.room, final_JSON.class.room); // class, number, letter
+            params.append("entry." + idsFormulari.day, begins.getFullYear().toString() + '-' + (begins.getMonth() + 1).toString().padStart(2, "0") + '-' + begins.getDate().toString().padStart(2, "0"));
+            params.append("entry." + idsFormulari.begins, formatDate(begins));
+            params.append("entry." + idsFormulari.ends, formatDate(ends));
+            params.append("entry." + idsFormulari.rows[final_JSON.letter], 'Columna ' + final_JSON.number);
+            // params.append("entry." + idsFormulari.notes, '[Autogenerat per delefme/covid-tracability -- Assignatura seleccionada: ' + (final_JSON.class.friendly_name || final_JSON.class.calendar_name) + ']');
+
+            var formulari_link = formBaseUrl + '?' + params.toString() + '#i1';
+            window.location.href = formulari_link;
+        });
+}
+
+
+function addEventListeners() {
+    window.addEventListener('load', onPageLoad);
+
+    var elements = document.getElementsByClassName("button");
+    Array.from(elements).forEach(function(element) {
+        element.addEventListener('click', clickButton);
+        element.parent = element.parentNode.id;
+    });
+
+    var elements = document.getElementsByClassName("complex-button");
+    Array.from(elements).forEach(function(element) {
+        element.addEventListener('click', clickButton);
+        element.parent = element.parentNode.id;
+    });
+
+    document.getElementById("send-button").addEventListener('click', function (el) {
+        document.getElementById('send-button').classList.add('is-loading');
+        sendForm();
+    });
+}
+
+addEventListeners();
