@@ -21,4 +21,6 @@
     flex: 1 0 34%;
     margin: 15px 10px;
     margin-right: -2px;
+    border-bottom-right-radius: 0px;
+    border-right: 3px solid "#4A4A4A";
 }
