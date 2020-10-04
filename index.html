@@ -21,7 +21,7 @@
     <body>
         <script></script>
 
-        <span id="dev-mode" class="hidden">Dev mode</span>
+        <span id="dev-mode" class="is-hidden">Dev mode</span>
         
         <nav class="navbar is-link">
             <div class="navbar-brand">
@@ -54,8 +54,8 @@
             </div><br>
 
             <div id="subject-container" class="grid buttons"></div>
-            <div id="no-subjects" class="hidden">No s'està impartint cap classe en aquests moments.</div>
-            <div id="fme-maps-container" class="hidden">
+            <div id="no-subjects" class="is-hidden">No s'està impartint cap classe en aquests moments.</div>
+            <div id="fme-maps-container" class="is-hidden">
               <h4>Mapes de les aules de l'FME</h4>
               <div class="maps">
                 <div class="map">
@@ -75,10 +75,10 @@
             
         </section>
 
-        <section id="section-2" class="section hidden">
+        <section id="section-2" class="section is-hidden">
             <button class="button is-link is-light" onclick="switchSection('section-1')">Torna enrere (Classe)</button>
 
-            <div id="repeated-subject-warning" class="hidden">
+            <div id="repeated-subject-warning" class="is-hidden">
                 <br><article class="message is-warning">
                     <div class="message-body">
                         Heu triat una assignatura que es fa en dues aules alhora. Comproveu que sou a l'aula <strong id="repeated-subject-warning-class">aula</strong>.
@@ -102,7 +102,7 @@
             </div>
         </section>
 
-        <section id="section-3" class="section hidden">
+        <section id="section-3" class="section is-hidden">
             <button class="button is-link is-light" onclick="switchSection('section-2')">Torna enrere (Lletra)</button>
             
             <div id="number-container" class="buttons grid">
@@ -118,7 +118,7 @@
                 <button class="button" id="number-10" data-number="10">10</button>
             </div>
         </section>
-        <section id="section-send" class="section hidden">
+        <section id="section-send" class="section is-hidden">
             <button class="button is-link is-light" onclick="switchSection('section-3')">Torna enrere (Número)</button>
             <br/><br/>
             <span class="has-text-weight-bold">Assignatura:</span>

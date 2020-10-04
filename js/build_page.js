@@ -64,10 +64,10 @@ function clickButton(element) {
         final_JSON["class"] = selectedClass;
         // Missatge advertència classe repetida
         if (repeated_subjects.has(selectedClass.id)) {
-            document.getElementById('repeated-subject-warning').classList.remove('hidden');
+            document.getElementById('repeated-subject-warning').classList.remove('is-hidden');
             document.getElementById('repeated-subject-warning-class').textContent = selectedClass.room;
         } else {
-            document.getElementById('repeated-subject-warning').classList.add('hidden');
+            document.getElementById('repeated-subject-warning').classList.add('is-hidden');
         }
         // Anchor següent pregunta
         switchSection("section-2");
@@ -94,8 +94,8 @@ function clickButton(element) {
 
 function switchSection(s) {
     setTimeout(function(){ 
-        document.getElementById(current_section).classList.add('hidden');
-        document.getElementById(s).classList.remove('hidden');
+        document.getElementById(current_section).classList.add('is-hidden');
+        document.getElementById(s).classList.remove('is-hidden');
         current_section = s;
     }, 75);
 }
@@ -240,11 +240,11 @@ function fetchClasses() {
         .then(response => response.json())
         .then(data => {
             if (data.payload.classes.length == 0) {
-                document.getElementById('no-subjects').classList.remove('hidden');
+                document.getElementById('no-subjects').classList.remove('is-hidden');
             } else {
                 repeated_subjects = findRepeatedSubjects(data.payload.classes);
                 buildSubjectContainer(data.payload.classes, repeated_subjects);
-                document.getElementById('fme-maps-container').classList.remove('hidden');
+                document.getElementById('fme-maps-container').classList.remove('is-hidden');
             }
 
         });
@@ -259,7 +259,7 @@ function onPageLoad() {
             localStorage.devMode = 'false';
             location.reload();
         });
-        banner.classList.remove('hidden');
+        banner.classList.remove('is-hidden');
         api_url = localStorage.getItem('apiUrl') || 'https://covid-tracability-backend-dev.sandbox.avm99963.com/api/v1/'
     } else {
         api_url = "https://covid-tracability-backend-prod.sandbox.avm99963.com/api/v1/";
