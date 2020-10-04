@@ -112,6 +112,7 @@ function findRepeatedSubjects(classes) {
 }
 
 function buildSubjectContainer(classes, repeated) {
+    document.getElementById("subject-container").innerHTML = "";
     for (var classe of classes) {
         var hora_inici = formatTime(new Date(parseInt(classe.begins)*1000));
         var hora_final = formatTime(new Date(parseInt(classe.ends)*1000));
