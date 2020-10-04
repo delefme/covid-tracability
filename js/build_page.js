@@ -43,7 +43,7 @@ function fillInSummary() {
 
     document.getElementById('subject-final').textContent = final_JSON.class.friendly_name || final_JSON.class.calendar_name;
     document.getElementById('classroom-final').textContent = final_JSON.class.room;
-    document.getElementById('date-final').textContent = begins.toLocaleDateString();
+    document.getElementById('date-final').textContent = formatDate(begins);
     document.getElementById('time-final').textContent = formatTime(begins) + ' - ' + formatTime(ends);
     document.getElementById('letter-final').textContent = final_JSON.letter;
     document.getElementById('number-final').textContent = final_JSON.number;
