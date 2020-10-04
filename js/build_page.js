@@ -119,16 +119,18 @@ function buildSubjectContainer(classes, repeated) {
         var classeDiv = document.createElement('div');
         
         // Check if the subject is repeated
-        duplicateSubjectBoolNext = classes[i+1].friendly_name == classe.friendly_name;
-        duplicateSubjectBoolPrev = classes[i-1].friendly_name == classe.friendly_name;
+        if (i > 0) duplicateSubjectBoolNext = classes[i+1].friendly_name == classe.friendly_name;
+        else duplicateSubjectBoolNext = false;
+        if (i < classes.length - 1) duplicateSubjectBoolPrev = classes[i-1].friendly_name == classe.friendly_name;
+        else duplicateSubjectBoolPrev = false;
         
-        if(duplicateSubjectBoolNext && i < classes.length - 1 && duplicateSubjectCounter%2 == 1) {
+        if(duplicateSubjectBoolNext && duplicateSubjectCounter%2 == 1) {
             classeDiv.classList.add('message', 'complex-button-full');
         }
         
-        if (duplicateSubjectBoolPrev && i > 0) {
+        if (duplicateSubjectBoolPrev) {
             classeDiv.classList.add('message', 'complex-button2Right');
-        } else if(duplicateSubjectBoolNext && i < classes.length - 1) {
+        } else if(duplicateSubjectBoolNext) {
             classeDiv.classList.add('message', 'complex-button2Left');
         } else {
             classeDiv.classList.add('message', 'complex-button');
@@ -141,7 +143,7 @@ function buildSubjectContainer(classes, repeated) {
         var header = document.createElement('div');
         header.classList.add('message-header');
 
-        if (!(duplicateSubjectBoolPrev && i > 0)) {
+        if (!(duplicateSubjectBoolPrev)) {
             header.textContent = classe.friendly_name || classe.calendar_name;
         } else {
             header.textContent = classe.friendly_name || classe.calendar_name;;
