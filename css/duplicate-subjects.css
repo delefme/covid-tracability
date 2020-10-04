@@ -13,14 +13,14 @@
     flex: 1 0 34%;
     margin: 15px 10px;
     border-bottom-left-radius: 0px;
-    margin-left: 2px;
-    border-right: 6px solid black;
+    margin-left: -3px;
+    border-left: 2.5px solid black;
 }
 
 .buttons.grid .complex-button2Left {
     flex: 1 0 34%;
     margin: 15px 10px;
-    margin-right: 2px;
+    margin-right: -3px;
     border-bottom-right-radius: 0px;
-    border-left: 6px solid black;
+    border-right: 2.5px solid black;
 }
