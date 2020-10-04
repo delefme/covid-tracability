@@ -133,6 +133,7 @@ function buildSubjectContainer(classes, repeated) {
         // Change the previous classeDiv
         if(duplicateSubjectBoolNext && duplicateSubjectCounter%2 == 1) {
             classeDiv.classList.add('message', 'complex-button-full');
+            duplicateSubjectCounter++;
         }
         
         classeDiv = document.createElement('div');
