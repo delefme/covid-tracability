@@ -113,6 +113,7 @@ function findRepeatedSubjects(classes) {
 
 function buildSubjectContainer(classes, repeated) {
     document.getElementById("subject-container").innerHTML = "";
+    console.log(classes);
     for (var classe of classes) {
         var hora_inici = formatTime(new Date(parseInt(classe.begins)*1000));
         var hora_final = formatTime(new Date(parseInt(classe.ends)*1000));
@@ -151,6 +152,7 @@ function buildSubjectContainer(classes, repeated) {
 
         document.getElementById("subject-container").appendChild(classeDiv);
     }
+    console.log(document.getElementById("subject-container").innerHTML);
 
     var elements = document.getElementsByClassName("button");
     Array.from(elements).forEach(function(element) {
@@ -167,6 +169,7 @@ function buildSubjectContainer(classes, repeated) {
 function getDefaultTime() {
     var time = new Date();
     time.setSeconds(0);
+    time.setMilliseconds(0);
     if (time.getMinutes() < 30) time.setMinutes(0);
     else time.setMinutes(30);
     if (time.getHours() < MIN_HOUR) {
@@ -234,7 +237,8 @@ function formatDate(d) {
 }
 
 function fetchClasses() {
-    fetch(api_url + "getCurrentClasses", {
+    console.log(api_url + "getClassesInTime/" + current_time.getTime()/1000);
+    fetch(api_url + "getClassesInTime/" + current_time.getTime()/1000, {
         "mode": "cors",
         "credentials": "include"
     })
@@ -242,9 +246,13 @@ function fetchClasses() {
         .then(data => {
             if (data.payload.classes.length == 0) {
                 document.getElementById('no-subjects').classList.remove('is-hidden');
+                document.getElementById('subject-container').classList.add('is-hidden');
+                document.getElementById('fme-maps-container').classList.add('is-hidden');
             } else {
                 repeated_subjects = findRepeatedSubjects(data.payload.classes);
                 buildSubjectContainer(data.payload.classes, repeated_subjects);
+                document.getElementById('no-subjects').classList.add('is-hidden');
+                document.getElementById('subject-container').classList.remove('is-hidden');
                 document.getElementById('fme-maps-container').classList.remove('is-hidden');
             }
 
