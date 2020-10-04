@@ -1,0 +1,24 @@
+.buttons.grid .complex-button {
+    flex: 1 0 34%;
+    margin: 15px 10px;
+
+}
+
+.buttons.grid .complex-button-full {
+    flex: 1 0 68%;
+    margin: 15px 10px;
+}
+
+.buttons.grid .complex-button2Right {
+    flex: 1 0 34%;
+    margin: 15px 10px;
+    border-bottom-left-radius: 0px;
+    margin-left: -2px;
+    border-left: 3px solid "#4A4A4A";
+}
+
+.buttons.grid .complex-button2Left {
+    flex: 1 0 34%;
+    margin: 15px 10px;
+    margin-right: -2px;
+}
