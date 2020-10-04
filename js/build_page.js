@@ -118,7 +118,8 @@ function buildSubjectContainer(classes, repeated) {
         classe.classList.add('is-hidden');
     });
     
-    for (var [i, classe] of classes.entries()) {        
+    for (var [i, classe] of classes.entries()) {       
+        console.log(classe);
         var hora_inici = formatTime(new Date(parseInt(classe.begins)*1000));
         var hora_final = formatTime(new Date(parseInt(classe.ends)*1000));
         var classeDiv;
@@ -140,6 +141,7 @@ function buildSubjectContainer(classes, repeated) {
             classeDiv.classList.add('message', 'complex-button2Right');
         } else if(duplicateSubjectBoolNext) {
             classeDiv.classList.add('message', 'complex-button2Left');
+            console.log("hola");
         } else {
             classeDiv.classList.add('message', 'complex-button');
         }
