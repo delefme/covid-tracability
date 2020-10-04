@@ -119,8 +119,8 @@ function buildSubjectContainer(classes, repeated) {
         var classeDiv = document.createElement('div');
         
         // Check if the subject is repeated
-        duplicateSubjectBoolNext = data.payload.classes[i+1].friendly_name == classe.friendly_name;
-        duplicateSubjectBoolPrev = data.payload.classes[i-1].friendly_name == classe.friendly_name;
+        duplicateSubjectBoolNext = classes[i+1].friendly_name == classe.friendly_name;
+        duplicateSubjectBoolPrev = classes[i-1].friendly_name == classe.friendly_name;
         
         if(duplicateSubjectBoolNext && i < classes.length - 1 && duplicateSubjectCounter%2 == 1) {
             classeDiv.classList.add('message', 'complex-button-full');
@@ -128,7 +128,7 @@ function buildSubjectContainer(classes, repeated) {
         
         if (duplicateSubjectBoolPrev && i > 0) {
             classeDiv.classList.add('message', 'complex-button2Right');
-        } else if(duplicateSubjectBoolNext && i < data.payload.classes.length - 1) {
+        } else if(duplicateSubjectBoolNext && i < classes.length - 1) {
             classeDiv.classList.add('message', 'complex-button2Left');
         } else {
             classeDiv.classList.add('message', 'complex-button');
