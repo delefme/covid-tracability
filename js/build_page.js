@@ -119,8 +119,8 @@ function buildSubjectContainer(classes, repeated) {
     });
     
     for (var [i, classe] of classes.entries()) {        
-        var hora_inici = formatDate(new Date(parseInt(classe.begins)*1000));
-        var hora_final = formatDate(new Date(parseInt(classe.ends)*1000));
+        var hora_inici = formatTime(new Date(parseInt(classe.begins)*1000));
+        var hora_final = formatTime(new Date(parseInt(classe.ends)*1000));
         var classeDiv = document.createElement('div');
         
         // Check if the subject is repeated
