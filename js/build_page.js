@@ -119,9 +119,9 @@ function buildSubjectContainer(classes, repeated) {
         var classeDiv = document.createElement('div');
         
         // Check if the subject is repeated
-        if (i > 0) duplicateSubjectBoolNext = classes[i+1].friendly_name == classe.friendly_name;
+        if (i < classes.length - 1) duplicateSubjectBoolNext = classes[i+1].friendly_name == classe.friendly_name;
         else duplicateSubjectBoolNext = false;
-        if (i < classes.length - 1) duplicateSubjectBoolPrev = classes[i-1].friendly_name == classe.friendly_name;
+        if (i > 0) duplicateSubjectBoolPrev = classes[i-1].friendly_name == classe.friendly_name;
         else duplicateSubjectBoolPrev = false;
         
         if(duplicateSubjectBoolNext && duplicateSubjectCounter%2 == 1) {
