@@ -14,7 +14,7 @@
     margin: 15px 10px;
     border-bottom-left-radius: 0px;
     margin-left: 2px;
-    border-left: 3px solid black;
+    border-right: 6px solid black;
 }
 
 .buttons.grid .complex-button2Left {
@@ -22,5 +22,5 @@
     margin: 15px 10px;
     margin-right: 2px;
     border-bottom-right-radius: 0px;
-    border-right: 3px solid black;
+    border-left: 6px solid black;
 }
