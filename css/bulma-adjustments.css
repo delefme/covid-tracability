@@ -48,10 +48,6 @@ html {
     cursor: pointer;
 }
 
-.hidden {
-    display: none;
-}
-
 #fme-maps-container h4 {
   font-weight: bold;
 }

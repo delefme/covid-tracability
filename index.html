@@ -21,7 +21,7 @@
     <body>
         <script></script>
 
-        <span id="dev-mode" class="hidden">Dev mode</span>
+        <span id="dev-mode" class="is-hidden">Dev mode</span>
         
         <nav class="navbar is-link">
             <div class="navbar-brand">
@@ -30,56 +30,61 @@
         </nav>
         
         <section id="section-1" class="section">
-            <!--
-            <div class="field has-addons">
-                <p class="control">
-                    <button class="button">&lt;</button>
-                </p>
-                <p class="control">
-                    <input type="date" class="button">
-                </p>
-                <p class="control">
-                    <button class="button">&gt;</button>
-                </p>
-            </div>
-            <div class="field has-addons">
-                <p class="control">
-                    <button class="button">&lt;</button>
-                </p>
-                <p class="control">
-                    <input type="button" class="button" value="08:00 - 08:30">
-                </p>
-                <p class="control">
-                    <button class="button">&gt;</button>
-                </p>
-            </div><br>
-            -->
+            <nav class="level">
+                <div class="level-item">
+                    <div class="field has-addons has-addons-centered">
+                        <p class="control">
+                        <button id="date-prev" class="button">&lt;</button>
+                        </p>
+                        <p class="control">
+                        <input id="date-selector" type="button" class="button">
+                        </p>
+                        <p class="control">
+                        <button id="date-next" class="button">&gt;</button>
+                        </p>
+                    </div>
+                </div>
+                <div class="level-item">
+                    <div class="field has-addons has-addons-centered">
+                        <p class="control">
+                        <button id="time-prev" class="button">&lt;</button>
+                        </p>
+                        <p class="control">
+                        <input id="time-selector" type="button" class="button" value="08:00 - 08:30">
+                        </p>
+                        <p class="control">
+                        <button id="time-next" class="button">&gt;</button>
+                        </p>
+                    </div>
+                </div>
+            </nav>
+
             <div id="subject-container" class="grid buttons"></div>
-            <div id="no-subjects" class="hidden">No s'està impartint cap classe en aquests moments.</div>
-            <div id="fme-maps-container" class="hidden">
-              <h4>Mapes de les aules de l'FME</h4>
-              <div class="maps">
-                <div class="map">
-                  <img src="img/ps.png">
-                  <div class="map--label">Planta <b>-1</b></div>
+            <div id="no-subjects" class="is-hidden">No s'està impartint cap classe en aquests moments.</div>
+            <div id="fme-maps-container" class="is-hidden">
+                <h4>Plànols de les aules de l'FME</h4>
+                <div class="maps">
+                    <div class="map">
+                        <img src="img/ps.png">
+                        <div class="map--label">Planta <b>-1</b></div>
+                    </div>
+                    <div class="map">
+                        <img src="img/p0.png">
+                        <div class="map--label">Planta <b>0</b></div>
+                    </div>
+                    <div class="map">
+                        <img src="img/p1.png">
+                        <div class="map--label">Planta <b>1</b></div>
+                    </div>
                 </div>
-                <div class="map">
-                  <img src="img/p0.png">
-                  <div class="map--label">Planta <b>0</b></div>
-                </div>
-                <div class="map">
-                  <img src="img/p1.png">
-                  <div class="map--label">Planta <b>1</b></div>
-                </div>
-              </div>
             </div>
-            
+
         </section>
 
-        <section id="section-2" class="section hidden">
+        <section id="section-2" class="section is-hidden">
             <button class="button is-link is-light" onclick="switchSection('section-1')">Torna enrere (Classe)</button>
 
-            <!-- <div id="repeated-subject-warning" class="hidden">
+            <div id="repeated-subject-warning" class="is-hidden">
                 <br><article class="message is-warning">
                     <div class="message-body">
                         Heu triat una assignatura que es fa en dues aules alhora. Comproveu que sou a l'aula <strong id="repeated-subject-warning-class">aula</strong>.
@@ -103,9 +108,9 @@
             </div>
         </section>
 
-        <section id="section-3" class="section hidden">
+        <section id="section-3" class="section is-hidden">
             <button class="button is-link is-light" onclick="switchSection('section-2')">Torna enrere (Lletra)</button>
-            
+
             <div id="number-container" class="buttons grid">
                 <button class="button" id="number-1" data-number="1">1</button>
                 <button class="button" id="number-2" data-number="2">2</button>
@@ -119,7 +124,7 @@
                 <button class="button" id="number-10" data-number="10">10</button>
             </div>
         </section>
-        <section id="section-send" class="section hidden">
+        <section id="section-send" class="section is-hidden">
             <button class="button is-link is-light" onclick="switchSection('section-3')">Torna enrere (Número)</button>
             <br/><br/>
             <span class="has-text-weight-bold">Assignatura:</span>
@@ -134,7 +139,7 @@
             <span id="letter-final">A</span><span id="number-final">1</span><br><br>
 
             <button id="send-button" class="button is-link is-large">Omple el formulari</button><br><br>
-            
+
             Hi ha errors? <br /><a class="button is-link is-light" href="https://docs.google.com/forms/d/e/1FAIpQLSfT9o287VqLyhwR8LPdloAQWhuqCgA3NfdhgP5vb9_sVQHL-g/viewform">Completa el formulari manualment</a>
 
 
