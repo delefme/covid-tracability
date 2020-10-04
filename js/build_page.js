@@ -113,7 +113,7 @@ function buildSubjectContainer(classes, repeated) {
     var duplicateSubjectBoolNext, duplicateSubjectBoolPrev;
     var duplicateSubjectCounter = 0;
     
-    for (var [i, classe] of classes) {        
+    for (var [i, classe] of classes.entries()) {        
         var hora_inici = formatDate(new Date(parseInt(classe.begins)*1000));
         var hora_final = formatDate(new Date(parseInt(classe.ends)*1000));
         var classeDiv = document.createElement('div');
