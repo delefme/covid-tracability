@@ -125,9 +125,9 @@ function buildSubjectContainer(classes, repeated) {
         var classeDiv;
         
         // Check if the subject is repeated
-        if (i < classes.length - 1) duplicateSubjectBoolNext = classes[i+1][1].classe.friendly_name == classe.friendly_name;
+        if (i < classes.length - 1) duplicateSubjectBoolNext = classes[i+1].classe.friendly_name == classe.friendly_name;
         else duplicateSubjectBoolNext = false;
-        if (i > 0) duplicateSubjectBoolPrev = classes[i-1][1].friendly_name == classe.friendly_name;
+        if (i > 0) duplicateSubjectBoolPrev = classes[i-1].friendly_name == classe.friendly_name;
         else duplicateSubjectBoolPrev = false;
         
         // Change the previous classeDiv
