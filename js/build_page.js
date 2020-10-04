@@ -107,19 +107,44 @@ function findRepeatedSubjects(classes) {
 }
 
 function buildSubjectContainer(classes, repeated) {
-    for (var classe of classes) {
+    var duplicateSubjectBoolNext, duplicateSubjectBoolPrev;
+    var duplicateSubjectCounter = 0;
+    
+    for (var [i, classe] of classes) {        
         var hora_inici = formatDate(new Date(parseInt(classe.begins)*1000));
         var hora_final = formatDate(new Date(parseInt(classe.ends)*1000));
-
         var classeDiv = document.createElement('div');
+        
+        // Check if the subject is repeated
+        duplicateSubjectBoolNext = data.payload.classes[i+1].friendly_name == classe.friendly_name;
+        duplicateSubjectBoolPrev = data.payload.classes[i-1].friendly_name == classe.friendly_name;
+        
+        if(duplicateSubjectBoolNext && i < classes.length - 1 && duplicateSubjectCounter%2 == 1) {
+            classeDiv.classList.add('message', 'complex-button-full');
+        }
+        
+        if (duplicateSubjectBoolPrev && i > 0) {
+            classeDiv.classList.add('message', 'complex-button2Right');
+        } else if(duplicateSubjectBoolNext && i < data.payload.classes.length - 1) {
+            classeDiv.classList.add('message', 'complex-button2Left');
+        } else {
+            classeDiv.classList.add('message', 'complex-button');
+        }
+        
         classeDiv.classList.add('message', 'complex-button');
         classeDiv.id = 'subject-' + classe.subject_id + '-' + classe.room;
         classeDiv.setAttribute('data-class', JSON.stringify(classe));
 
         var header = document.createElement('div');
         header.classList.add('message-header');
-        header.textContent = classe.friendly_name || classe.calendar_name;
 
+        if (!(duplicateSubjectBoolPrev && i > 0)) {
+            header.textContent = classe.friendly_name || classe.calendar_name;
+        } else {
+            header.textContent = classe.friendly_name || classe.calendar_name;;
+            header.style.color = "#4A4A4A";
+        }
+        
         var body = document.createElement('div');
         body.classList.add('message-body');
 
@@ -127,9 +152,7 @@ function buildSubjectContainer(classes, repeated) {
         var span = document.createElement('span');
         span.textContent = classe.room;
 
-        if (repeated.has(classe.id)) {
-            div1.classList.add('has-text-danger', 'has-text-weight-bold');
-        }
+        div1.classList.add('has-text-weight-bold');
 
         div1.textContent = 'Aula ';
         div1.appendChild(span);
@@ -144,6 +167,7 @@ function buildSubjectContainer(classes, repeated) {
         classeDiv.appendChild(body);
 
         document.getElementById("subject-container").appendChild(classeDiv);
+        ++duplicateSubjectCounter;
     }
 
     var elements = document.getElementsByClassName("button");
@@ -169,7 +193,7 @@ function formatDate(d) {
 
 function onPageLoad() {
 
-    // Check if user is signed in
+    // Check if devMode is on
     if (localStorage.getItem('devMode') == 'true') {
         var banner = document.getElementById('dev-mode');
         banner.addEventListener('click', _ => {
