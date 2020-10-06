@@ -52,6 +52,7 @@ class TableParser:
                 classes = td_hora['class'];
                 if td_hora.has_attr('class') and not td_hora['class'][0] in self.EMPTY_CELL_CLASSES:
                     assignatura = td_hora.get_text().strip()
+                    degree = td_hora.get("class")[0]
                     aulaRaw = table.find_all("th")[column].get_text().strip()
                     aula = p.match(aulaRaw).group(1)
                     files = int(td_hora.get("rowspan"))
@@ -68,7 +69,8 @@ class TableParser:
                     print(("Afegint " if db != None else "") + assignatura
                             + ", " + hora
                             + ", " + str(durada) + "mins"
-                            + ", " + aula)
+                            + ", " + aula
+                            + ", " + degree)
 
                     if db != None:
                         cursor1 = db.cursor()
@@ -79,8 +81,8 @@ class TableParser:
                             print("[WARNING] Ja estava a la DB (id " + str(row.id) + ")")
                         else:
                             cursor2 = db.cursor()
-                            cursor2.execute("INSERT INTO classes (calendar_name, room, begins, ends) VALUES (?, ?, ?, ?)",
-                                    assignatura, aula, begins, ends)
+                            cursor2.execute("INSERT INTO classes (calendar_name, room, begins, ends, degree) VALUES (?, ?, ?, ?, ?)",
+                                    assignatura, aula, begins, ends, degree)
 
                     for i in range(1, files - 1):
                         if i < len(implicitClasses):
