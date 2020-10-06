@@ -74,8 +74,8 @@ class TableParser:
 
                     if db != None:
                         cursor1 = db.cursor()
-                        cursor1.execute("SELECT id FROM classes WHERE calendar_name = ? AND room = ? AND begins = ? AND ends = ?",
-                                assignatura, aula, begins, ends)
+                        cursor1.execute("SELECT id FROM classes WHERE calendar_name = ? AND room = ? AND begins = ? AND ends = ? AND degree = ?",
+                                assignatura, aula, begins, ends, degree)
                         row = cursor1.fetchone()
                         if row:
                             print("[WARNING] Ja estava a la DB (id " + str(row.id) + ")")
