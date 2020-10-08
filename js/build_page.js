@@ -202,6 +202,13 @@ function buildTimeSelector(date) {
     document.getElementById("time-selector").value = formatTime(date) + " - " + formatTime(end_time);
 }
 
+function isDateAfterTomorrow(potential_time) {
+  var now = new Date();
+  var tomorrow = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1);
+
+  return (potential_time >= tomorrow);
+}
+
 function addDateEventListeners(date) {
     document.getElementById("date-prev").addEventListener('click', function (el) {
         current_time = new Date(current_time.getTime() - 24*60*60000);
@@ -209,7 +216,11 @@ function addDateEventListeners(date) {
         fetchClasses();
     });
     document.getElementById("date-next").addEventListener('click', function (el) {
-        current_time = new Date(current_time.getTime() + 24*60*60000);
+        var potential_time = new Date(current_time.getTime() + 24*60*60000);
+
+        if (isDateAfterTomorrow(potential_time)) return;
+        current_time = potential_time;
+
         buildTimeSelector(current_time);
         fetchClasses();
     });
@@ -224,12 +235,16 @@ function addDateEventListeners(date) {
         fetchClasses();
     });
     document.getElementById("time-next").addEventListener('click', function (el) {
-        current_time = new Date(current_time.getTime() + 30*60000);
-        if (current_time.getHours() >= MAX_HOUR) {
-            current_time = new Date(current_time.getTime() + 24*60*60000);
-            current_time.setHours(MIN_HOUR);
-            current_time.setMinutes(0);
+        var potential_time = new Date(current_time.getTime() + 30*60000);
+        if (potential_time.getHours() >= MAX_HOUR) {
+            potential_time = new Date(potential_time.getTime() + 24*60*60000);
+            potential_time.setHours(MIN_HOUR);
+            potential_time.setMinutes(0);
         }
+
+        if (isDateAfterTomorrow(potential_time)) return;
+        current_time = potential_time;
+
         buildTimeSelector(current_time);
         fetchClasses();
     });
