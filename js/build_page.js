@@ -56,17 +56,11 @@ function clickButton(element) {
     if (parent == "subject-container") {
         // Canvi de background del button
         var selectedClass = JSON.parse(btn.getAttribute('data-class'));
-        $("#subject-container .complex-button").removeClass("is-link")
-        btn.classList.add("is-link");
+        $("#subject-container .complex-button, #subject-container .message-body").removeClass("is-selected")
+        btn.classList.add('is-selected');
+        btn.parentNode.parentNode.classList.add('is-selected');
         // Canvi JSON
         final_JSON["class"] = selectedClass;
-        // Missatge advertència classe repetida
-        if (repeated_subjects.has(selectedClass.id)) {
-            document.getElementById('repeated-subject-warning').classList.remove('is-hidden');
-            document.getElementById('repeated-subject-warning-class').textContent = selectedClass.room;
-        } else {
-            document.getElementById('repeated-subject-warning').classList.add('is-hidden');
-        }
         // Anchor següent pregunta
         switchSection("section-2");
     } else if (parent == "number-container") {
@@ -109,102 +103,80 @@ function findRepeatedSubjects(classes) {
     return rep;
 }
 
-function buildSubjectContainer(classes, repeated) {
-    var duplicateSubjectBoolNext, duplicateSubjectBoolPrev;
-    var duplicateSubjectCounter = 0;
-    
-    // Flush existing classes
-    document.querySelectorAll('.message').forEach(function(classe) {
-        classe.classList.add('is-hidden');
+function transformClasses(rawClasses) {
+    var classes = [];
+    rawClasses.forEach(c => {
+        var found = false;
+        for (var i = 0; i < classes.length; ++i) {
+            if ((classes[i][0].friendly_name || classes[i][0].calendar_name) == (c.friendly_name || c.calendar_name)) {
+                classes[i].push(c);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            classes.push([c]);
+        }
     });
-    
-    for (var [i, classe] of classes.entries()) {       
-        console.log(classe);
-        var hora_inici = formatTime(new Date(parseInt(classe.begins)*1000));
-        var hora_final = formatTime(new Date(parseInt(classe.ends)*1000));
-        var classeDiv;
-        
-        // Check if the subject is repeated
-        if (i < classes.length - 1) {
-            duplicateSubjectBoolNext = classes[i+1].friendly_name == classe.friendly_name;
-        }
-        else { 
-            duplicateSubjectBoolNext = false;
-        }
-        if (i > 0) {
-            duplicateSubjectBoolPrev = classes[i-1].friendly_name == classe.friendly_name;
-        }
-        else {
-            duplicateSubjectBoolPrev = false;
-        }
-        
-        // Change the previous classeDiv
-        if(duplicateSubjectBoolNext && duplicateSubjectCounter%2 == 1) {
-            classeDiv.classList.add('message', 'complex-button-full');
-            duplicateSubjectCounter++;
-        }
-        
-        classeDiv = document.createElement('div');
-        
-        if (duplicateSubjectBoolPrev) {
-            classeDiv.classList.add('message', 'complex-button2Right');
-        } else if(duplicateSubjectBoolNext) {
-            classeDiv.classList.add('message', 'complex-button2Left');
-            console.log("hola");
-        } else {
-            classeDiv.classList.add('message', 'complex-button');
-        }
-        
+
+    return classes;
+}
+
+function buildSubjectContainer(classes) {
+    // Flush existing classes
+    document.querySelectorAll('#subject-container .message').forEach(function(classe) {
+        classe.parentNode.removeChild(classe);
+    });
+
+    for (var uniqueClasses of classes) {
+        var firstClass = uniqueClasses[0];
+        var hora_inici = formatTime(new Date(parseInt(firstClass.begins)*1000));
+        var hora_final = formatTime(new Date(parseInt(firstClass.ends)*1000));
+
+        var classeDiv = document.createElement('div');
         classeDiv.classList.add('message', 'complex-button');
-        classeDiv.id = 'subject-' + classe.subject_id + '-' + classe.room;
-        classeDiv.setAttribute('data-class', JSON.stringify(classe));
 
         var header = document.createElement('div');
         header.classList.add('message-header');
+        header.textContent = firstClass.friendly_name || firstClass.calendar_name;
 
-        if (!(duplicateSubjectBoolPrev)) {
-            header.textContent = classe.friendly_name || classe.calendar_name;
-            header.style.color = "#FFFFFF";
-        } else {
-            header.textContent = classe.friendly_name || classe.calendar_name;;
-            header.style.color = "#4A4A4A";
-        }
-        
-        var body = document.createElement('div');
-        body.classList.add('message-body');
-
-        var div1 = document.createElement('div');
-        var span = document.createElement('span');
-        span.textContent = classe.room;
-
-        div1.classList.add('has-text-weight-bold');
-
-        div1.textContent = 'Aula ';
-        div1.appendChild(span);
-
-        var div2 = document.createElement('div');
-        div2.textContent = hora_inici + ' - ' + hora_final;
-
-        body.appendChild(div1);
-        body.appendChild(div2);
+        var roomsDiv = document.createElement('div');
+        roomsDiv.classList.add('rooms-container');
 
         classeDiv.appendChild(header);
-        classeDiv.appendChild(body);
 
+        for (var classe of uniqueClasses) {
+            if (classe.user_selected) {
+                classeDiv.classList.add('is-primary');
+            }
+
+            var body = document.createElement('div');
+            body.classList.add('message-body');
+            body.setAttribute('data-class', JSON.stringify(classe));
+            body.addEventListener('click', clickButton);
+            body.parent = 'subject-container';
+
+            var div1 = document.createElement('div');
+
+            div1.classList.add('has-text-weight-bold');
+            div1.textContent = 'Aula ';
+
+            var span = document.createElement('span');
+            span.textContent = classe.room;
+            div1.appendChild(span);
+
+            var div2 = document.createElement('div');
+            div2.textContent = hora_inici + ' - ' + hora_final;
+
+            body.appendChild(div1);
+            body.appendChild(div2);
+            roomsDiv.appendChild(body);
+        }
+
+        classeDiv.appendChild(roomsDiv);
         document.getElementById("subject-container").appendChild(classeDiv);
-        ++duplicateSubjectCounter;
     }
-  
-    var elements = document.getElementsByClassName("button");
-    Array.from(elements).forEach(function(element) {
-        element.addEventListener('click', clickButton);
-        element.parent = element.parentNode.id;
-    });
-    var elements = document.getElementsByClassName("complex-button");
-    Array.from(elements).forEach(function(element) {
-        element.addEventListener('click', clickButton);
-        element.parent = element.parentNode.id;
-    });
 }
 
 function getDefaultTime() {
@@ -278,7 +250,6 @@ function formatDate(d) {
 }
 
 function fetchClasses() {
-    console.log(api_url + "getClassesInTime/" + current_time.getTime()/1000);
     fetch(api_url + "getClassesInTime/" + current_time.getTime()/1000, {
         "mode": "cors",
         "credentials": "include"
@@ -290,8 +261,8 @@ function fetchClasses() {
                 document.getElementById('subject-container').classList.add('is-hidden');
                 document.getElementById('fme-maps-container').classList.add('is-hidden');
             } else {
-                repeated_subjects = findRepeatedSubjects(data.payload.classes);
-                buildSubjectContainer(data.payload.classes, repeated_subjects);
+                var transformedClasses = transformClasses(data.payload.classes);
+                buildSubjectContainer(transformedClasses);
                 document.getElementById('no-subjects').classList.add('is-hidden');
                 document.getElementById('subject-container').classList.remove('is-hidden');
                 document.getElementById('fme-maps-container').classList.remove('is-hidden');
