@@ -279,16 +279,11 @@ function fetchClasses() {
 }
 
 function onPageLoad() {
-
-    // Check if user is signed in
-    if (localStorage.getItem('devMode') == 'true') {
+    var searchParams = new URLSearchParams(location.search);
+    if (searchParams.has('apiUrl')) {
         var banner = document.getElementById('dev-mode');
-        banner.addEventListener('click', _ => {
-            localStorage.devMode = 'false';
-            location.reload();
-        });
         banner.classList.remove('is-hidden');
-        api_url = localStorage.getItem('apiUrl') || 'https://covid-tracability-backend-dev.sandbox.avm99963.com/api/v1/'
+        api_url = searchParams.get('apiUrl') || 'https://covid-tracability-backend-dev.sandbox.avm99963.com/api/v1/'
     } else {
         api_url = "https://covid-tracability-backend-prod.sandbox.avm99963.com/api/v1/";
     }
@@ -296,6 +291,7 @@ function onPageLoad() {
     current_time = getDefaultTime();
     buildTimeSelector(current_time);
 
+    // Check if user is signed in
     fetch(api_url + "isSignedIn", {
         "mode": "cors",
         "credentials": "include"
