@@ -1,5 +1,6 @@
 html {
     min-width: auto;
+    touch-action: manipulation;
 }
 
 .buttons.grid {
