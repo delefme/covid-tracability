@@ -65,7 +65,7 @@ html {
     color: #fff;
     font-size: 10px;
     font-weight: 700;
-    right: 20px;
+    left: 20px;
     line-height: 18px;
     margin: -9px -50px;
     opacity: .87;
@@ -73,10 +73,14 @@ html {
     text-align: center;
     text-shadow: 1px 1px 0 #4e342e;
     top: 20px;
-    transform: rotate(45deg);
+    transform: rotate(-45deg);
     width: 100px;
-    z-index: 99;
+    z-index: 35;
     cursor: pointer;
+}
+
+.navbar.is-devmode .navbar-brand {
+  padding-left: 30px;
 }
 
 #fme-maps-container h4 {

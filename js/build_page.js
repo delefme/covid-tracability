@@ -35,7 +35,22 @@ var current_section = "section-1";
 
 var repeated_subjects;
 var current_time;
+var api_url;
 
+
+function fetchAPI(action, method = 'GET', body = '') {
+    var options = {
+        mode: 'cors',
+        credentials: 'include',
+        method,
+    };
+
+    if (method !== 'GET') {
+        options.body = body;
+    }
+
+    return fetch(api_url + action, options);
+}
 
 function fillInSummary() {
     var begins = new Date(parseInt(final_JSON.class.begins)*1000);
@@ -265,10 +280,7 @@ function formatDate(d) {
 }
 
 function fetchClasses() {
-    fetch(api_url + "getClassesInTime/" + current_time.getTime()/1000, {
-        "mode": "cors",
-        "credentials": "include"
-    })
+    fetchAPI('getClassesInTime/' + current_time.getTime()/1000)
         .then(response => response.json())
         .then(data => {
             if (data.payload.classes.length == 0) {
@@ -287,10 +299,46 @@ function fetchClasses() {
 }
 
 function onPageLoad() {
+    // Set up navbar
+    const navbarBurgers = document.querySelectorAll('.navbar-burger');
+
+    for (var navbar of navbarBurgers) {
+      navbar.addEventListener('click', () => {
+        const targetId = navbar.dataset.target;
+        const target = document.getElementById(targetId);
+
+        navbar.classList.toggle('is-active');
+        target.classList.toggle('is-active');
+      });
+    }
+
+    // Set up the modals
+    document.querySelectorAll('[data-open-modal]').forEach(el => {
+        el.addEventListener('click', () => {
+            document.getElementById(el.dataset.openModal).classList.add('is-active');
+        });
+    });
+
+    document.querySelectorAll('[data-close-modal]').forEach(el => {
+        el.addEventListener('click', () => {
+            document.getElementById(el.dataset.closeModal).classList.remove('is-active');
+        });
+    });
+
+    // Set up the sign out button
+    document.getElementById('signout-button').addEventListener('click', () => {
+        fetchAPI('signOut', 'POST')
+            .then(response => response.json())
+            .then(data => {
+                window.location.reload();
+            });
+    });
+
     var searchParams = new URLSearchParams(location.search);
     if (searchParams.has('apiUrl')) {
         var banner = document.getElementById('dev-mode');
         banner.classList.remove('is-hidden');
+        document.querySelector('.navbar').classList.add('is-devmode');
         api_url = searchParams.get('apiUrl') || 'https://covid-tracability-backend-dev.sandbox.avm99963.com/api/v1/'
     } else {
         api_url = "https://covid-tracability-backend-prod.sandbox.avm99963.com/api/v1/";
@@ -300,24 +348,22 @@ function onPageLoad() {
     buildTimeSelector(current_time);
 
     // Check if user is signed in
-    fetch(api_url + "isSignedIn", {
-        "mode": "cors",
-        "credentials": "include"
-    })
+    fetchAPI('isSignedIn')
         .then(response => response.json())
         .then(data => {
             if (!data.payload.signedIn) {
                 console.log("Not signed in!");
-                fetch(api_url + "getAuthUrl", {
-                    "mode": "cors",
-                    "credentials": "include"
-                })
+                fetchAPI('getAuthUrl')
                     .then(response => response.json())
                     .then(data => {
-                        // TODO: redirect here
-                        // location.href = data.payload.url;
-                        console.warn('Log in here: ', data.payload.url);
+                        var btn = document.getElementById('signin-button');
+                        btn.href = data.payload.url || '#error';
+
+                        var signinModalBtn = document.getElementById('signin-open-modal-button');
+                        signinModalBtn.classList.remove('is-hidden');
                     });
+            } else {
+                document.getElementById('signout-button').classList.remove('is-hidden');
             }
         });
 
@@ -326,14 +372,9 @@ function onPageLoad() {
 
 function sendForm() {
     // Add subject to user
-    fetch(api_url + "addUserSubject", {
-        "method": "POST",
-        "body": JSON.stringify({
-            subject: final_JSON.class.subject_id
-        }),
-        "mode": "cors",
-        "credentials": "include"
-    })
+    fetchAPI('addUserSubject', 'POST', JSON.stringify({
+        subject: final_JSON.class.subject_id
+    }))
         .then(res => res.json())
         .then(json => {
             console.log("Subject added to user: ", json);

@@ -25,6 +25,32 @@
         <nav class="navbar is-link">
             <div class="navbar-brand">
                 <div class="navbar-item has-text-weight-bold">Traçabilitat DAFME</div>
+                <a class="navbar-burger" data-target="navbar-menu" aria-label="menu">
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                    <span aria-hidden="true"></span>
+                </a>
+            </div>
+
+            <div id="navbar-menu" class="navbar-menu">
+                <div class="navbar-end">
+                    <div class="navbar-item">
+                        <div class="field">
+                            <p class="control">
+                                <button id="signin-open-modal-button" class="button is-hidden" data-open-modal="signin-modal">
+                                    <span class="icon"><span class="iconify" data-icon="mdi:login"></span></span>
+                                    <span>Inicia sessió</span>
+                                </button>
+                            </p>
+                            <p class="control">
+                                <button id="signout-button" class="button is-hidden">
+                                    <span class="icon"><span class="iconify" data-icon="mdi:logout"></span></span>
+                                    <span>Tanca la sessió</span>
+                                </button>
+                            </p>
+                        </div>
+                    </div>
+                </div>
             </div>
         </nav>
         
@@ -148,6 +174,36 @@
             </article>
         </section>
 
+        <div id="signin-modal" class="modal">
+            <div class="modal-background" data-close-modal="signin-modal"></div>
+            <div class="modal-card">
+                <header class="modal-card-head">
+                    <p class="modal-card-title">Iniciar sessió</p>
+                    <button class="delete" aria-label="close" data-close-modal="signin-modal"></button>
+                </header>
+                <section class="modal-card-body">
+                    <div class="message is-info">
+                        <div class="message-body">
+                            <b>Nota:</b> Has d'iniciar sessió amb el teu compte de Google de la UPC.
+                        </div>
+                    </div>
+
+                    <div class="content">
+                        <p>A l'iniciar sessió tindràs accés a les següents funcions:</p>
+                        <ul>
+                            <li>Mostrar les <b>assignatures que estàs cursant al principi</b> de la llista.</li>
+                            <li><b>Rebre notificacions</b> per introduir el seient a cada classe (en desenvolupament).</li>
+                            <li><b>Autoemplenament del correu electrònic</b> de la UPC (pel grau d'estadística, en desenvolupament).</li>
+                            </ul>
+                    </div>
+                </section>
+                <footer class="modal-card-foot">
+                    <a class="button is-link" id="signin-button" href="#nosignin">Inicia sessió</a>
+                </footer>
+            </div>
+        </div>
+
         <script src="./js/build_page.js"></script>
+        <script src="https://code.iconify.design/1/1.0.7/iconify.min.js"></script>
     </body>
 </html>
