@@ -310,6 +310,87 @@ function fetchClasses() {
         });
 }
 
+function addSubjectTag(userSubjectsList, subject, subjects) {
+    var tag = document.createElement('span');
+    tag.classList.add('tag', 'is-primary');
+    tag.textContent = subject.friendly_name || 'Unknown';
+
+    var delBtn = document.createElement('a');
+    delBtn.classList.add('delete', 'is-small');
+    delBtn.addEventListener('click', () => {
+        fetchAPI('removeUserSubject', 'POST', JSON.stringify({
+            subject: subject.id
+        }))
+            .then(response => response.json())
+            .then(data => {
+                subjects.forEach((s, index) => {
+                    if (s.id == subject.id) {
+                        subjects[index].user_selected = false;
+                    }
+                });
+                userSubjectsList.removeChild(tag);
+            });
+    });
+
+    tag.appendChild(delBtn);
+    userSubjectsList.appendChild(tag);
+}
+
+function prepareSubjectsList(subjects) {
+    // Add current classes to subject list
+    const userSubjectsList = document.getElementById('user-subjects-list');
+    subjects.forEach((subject, index) => {
+        if (('user_selected' in subject) && subject.user_selected) {
+            addSubjectTag(userSubjectsList, subjects[index], subjects);
+        }
+    });
+
+    // Initialize autocomplete for "add new subject" input
+    const newSubject = document.getElementById('new-subject');
+    autocomplete({
+        input: newSubject,
+        fetch: (value, update) => {
+            var text = value.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+            var suggestions = subjects.filter(s => {
+                if (s.user_selected) return false;
+
+                var normalized = s.friendly_name.normalize('NFD').
+                    replace(/[\u0300-\u036f]/g, '').toLowerCase();
+                return normalized.includes(text);
+            }).map(s => {
+                return {
+                    label: s.friendly_name,
+                    value: s.id
+                }
+            });
+            update(suggestions);
+        },
+        onSelect: option => {
+            fetchAPI('addUserSubject', 'POST', JSON.stringify({
+                subject: option.value
+            }))
+                .then(res => res.json())
+                .then(data => {
+                    if (data.status == 'ok') {
+                        addSubjectTag(userSubjectsList, {
+                            friendly_name: option.label,
+                            id: option.value
+                        }, subjects);
+
+                        subjects.forEach((s, index) => {
+                            if (s.id == option.value) {
+                                subjects[index].user_selected = true;
+                            }
+                        });
+
+                        newSubject.value = '';
+                    }
+                });
+        },
+        minLength: 1,
+    });
+}
+
 function onPageLoad() {
     // Set up navbar
     const navbarBurgers = document.querySelectorAll('.navbar-burger');
@@ -360,24 +441,19 @@ function onPageLoad() {
     buildTimeSelector(current_time);
 
     // Check if user is signed in
-    fetchAPI('isSignedIn')
+    fetchAPI('getStartupData')
         .then(response => response.json())
         .then(data => {
-            final_JSON.signedIn = data.payload.signedIn;
-            if (!data.payload.signedIn) {
+            final_JSON.signedIn = data.payload.user.signedIn || false;
+            if (!final_JSON.signedIn) {
                 console.log("Not signed in!");
-                fetchAPI('getAuthUrl')
-                    .then(response => response.json())
-                    .then(data => {
-                        var btn = document.getElementById('signin-button');
-                        btn.href = data.payload.url || '#error';
-
-                        var signinModalBtn = document.getElementById('signin-open-modal-button');
-                        signinModalBtn.classList.remove('is-hidden');
-                    });
-            } else {
-                document.getElementById('signout-button').classList.remove('is-hidden');
+                var btn = document.getElementById('signin-button');
+                btn.href = data.payload.authUrl || '#error';
             }
+
+            document.body.classList.add(final_JSON.signedIn ? 'is-signedin' : 'is-signedout');
+
+            prepareSubjectsList(data.payload.subjects);
         });
 
     fetchClasses();

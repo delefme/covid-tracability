@@ -110,3 +110,44 @@ html {
   margin-top: 2px;
   margin-bottom: 2px;
 }
+
+.icon svg.inline-mdi {
+    width: 1em;
+    height: 1em;
+}
+
+body:not(.is-signedin) [data-show-when="signedin"], body:not(.is-signedout) [data-show-when="signedout"] {
+    display: none!important;
+}
+
+.modal .dropdown-menu {
+    z-index: 45;
+}
+
+/* Autocomplete */
+.autocomplete {
+    background: white;
+    z-index: 1000;
+    font: 14px/22px "-apple-system", BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    overflow: auto;
+    box-sizing: border-box;
+    border: 1px solid rgba(50, 50, 50, 0.6);
+}
+
+.autocomplete * {
+    font: inherit;
+}
+
+.autocomplete > div {
+    padding: 0 4px;
+}
+
+.autocomplete .group {
+    background: #eee;
+}
+
+.autocomplete > div:hover:not(.group),
+.autocomplete > div.selected {
+    background: #81ca91;
+    cursor: pointer;
+}
