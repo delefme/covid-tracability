@@ -28,7 +28,8 @@ const MAX_HOUR = 23; // Pels altres graus de la Facultat
 var final_JSON = {
     "class": null,
     "number": "",
-    "letter": ""
+    "letter": "",
+    "signedIn": null
 };
 
 var current_section = "section-1";
@@ -52,6 +53,10 @@ function fetchAPI(action, method = 'GET', body = '') {
     return fetch(api_url + action, options);
 }
 
+function shouldShowRememberButton() {
+    return final_JSON.signedIn && final_JSON.class.subject_id !== null && final_JSON.class.user_selected !== true;
+}
+
 function fillInSummary() {
     var begins = new Date(parseInt(final_JSON.class.begins)*1000);
     var ends = new Date(parseInt(final_JSON.class.ends)*1000);
@@ -62,6 +67,13 @@ function fillInSummary() {
     document.getElementById('time-final').textContent = formatTime(begins) + ' - ' + formatTime(ends);
     document.getElementById('letter-final').textContent = final_JSON.letter;
     document.getElementById('number-final').textContent = final_JSON.number;
+
+    var remember = document.getElementById('remember-subject-container');
+    if (shouldShowRememberButton()) {
+        remember.classList.remove('is-hidden');
+    } else {
+        remember.classList.add('is-hidden');
+    }
 }
 
 function clickButton(element) {
@@ -351,6 +363,7 @@ function onPageLoad() {
     fetchAPI('isSignedIn')
         .then(response => response.json())
         .then(data => {
+            final_JSON.signedIn = data.payload.signedIn;
             if (!data.payload.signedIn) {
                 console.log("Not signed in!");
                 fetchAPI('getAuthUrl')
@@ -371,28 +384,33 @@ function onPageLoad() {
 }
 
 function sendForm() {
-    // Add subject to user
-    fetchAPI('addUserSubject', 'POST', JSON.stringify({
-        subject: final_JSON.class.subject_id
-    }))
-        .then(res => res.json())
-        .then(json => {
-            console.log("Subject added to user: ", json);
+    var begins = new Date(parseInt(final_JSON.class.begins)*1000);
+    var ends = new Date(parseInt(final_JSON.class.ends)*1000);
 
-            var begins = new Date(parseInt(final_JSON.class.begins)*1000);
-            var ends = new Date(parseInt(final_JSON.class.ends)*1000);
+    var params = new URLSearchParams();
+    params.append("entry." + idsFormulari.room, final_JSON.class.room); // class, number, letter
+    params.append("entry." + idsFormulari.day, begins.getFullYear().toString() + '-' + (begins.getMonth() + 1).toString().padStart(2, "0") + '-' + begins.getDate().toString().padStart(2, "0"));
+    params.append("entry." + idsFormulari.begins, formatTime(begins));
+    params.append("entry." + idsFormulari.ends, formatTime(ends));
+    params.append("entry." + idsFormulari.rows[final_JSON.letter], 'Columna ' + final_JSON.number);
+    // params.append("entry." + idsFormulari.notes, '[Autogenerat per delefme/covid-tracability -- Assignatura seleccionada: ' + (final_JSON.class.friendly_name || final_JSON.class.calendar_name) + ']');
 
-            var params = new URLSearchParams();
-            params.append("entry." + idsFormulari.room, final_JSON.class.room); // class, number, letter
-            params.append("entry." + idsFormulari.day, begins.getFullYear().toString() + '-' + (begins.getMonth() + 1).toString().padStart(2, "0") + '-' + begins.getDate().toString().padStart(2, "0"));
-            params.append("entry." + idsFormulari.begins, formatTime(begins));
-            params.append("entry." + idsFormulari.ends, formatTime(ends));
-            params.append("entry." + idsFormulari.rows[final_JSON.letter], 'Columna ' + final_JSON.number);
-            // params.append("entry." + idsFormulari.notes, '[Autogenerat per delefme/covid-tracability -- Assignatura seleccionada: ' + (final_JSON.class.friendly_name || final_JSON.class.calendar_name) + ']');
+    var formulari_link = formBaseUrl + '?' + params.toString() + '#i1';
+    var remember = document.getElementById('remember-subject');
+    if (shouldShowRememberButton() && remember.checked) {
+        // Add subject to user
+        fetchAPI('addUserSubject', 'POST', JSON.stringify({
+            subject: final_JSON.class.subject_id
+        }))
+            .then(res => res.json())
+            .then(json => {
+                console.log("Subject added to user: ", json);
 
-            var formulari_link = formBaseUrl + '?' + params.toString() + '#i1';
-            window.location.href = formulari_link;
-        });
+                window.location.href = formulari_link;
+            });
+    } else {
+        window.location.href = formulari_link;
+    }
 }
 
 
