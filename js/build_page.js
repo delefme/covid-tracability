@@ -37,6 +37,21 @@ var repeated_subjects;
 var current_time;
 
 
+// From https://gist.github.com/treyhuffine/2ced8b8c503e5246e2fd258ddbd21b8c
+const debounce = (func, wait) => {
+    let timeout;
+
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+};
+
 function fillInSummary() {
     var begins = new Date(parseInt(final_JSON.class.begins)*1000);
     var ends = new Date(parseInt(final_JSON.class.ends)*1000);
@@ -213,7 +228,7 @@ function addDateEventListeners(date) {
     document.getElementById("date-prev").addEventListener('click', function (el) {
         current_time = new Date(current_time.getTime() - 24*60*60000);
         buildTimeSelector(current_time);
-        fetchClasses();
+        fetchClassesDebounced();
     });
     document.getElementById("date-next").addEventListener('click', function (el) {
         var potential_time = new Date(current_time.getTime() + 24*60*60000);
@@ -222,7 +237,7 @@ function addDateEventListeners(date) {
         current_time = potential_time;
 
         buildTimeSelector(current_time);
-        fetchClasses();
+        fetchClassesDebounced();
     });
     document.getElementById("time-prev").addEventListener('click', function (el) {
         current_time = new Date(current_time.getTime() - 30*60000);
@@ -232,7 +247,7 @@ function addDateEventListeners(date) {
             current_time.setMinutes(30);
         }
         buildTimeSelector(current_time);
-        fetchClasses();
+        fetchClassesDebounced();
     });
     document.getElementById("time-next").addEventListener('click', function (el) {
         var potential_time = new Date(current_time.getTime() + 30*60000);
@@ -246,7 +261,7 @@ function addDateEventListeners(date) {
         current_time = potential_time;
 
         buildTimeSelector(current_time);
-        fetchClasses();
+        fetchClassesDebounced();
     });
 }
 
@@ -285,6 +300,8 @@ function fetchClasses() {
 
         });
 }
+
+const fetchClassesDebounced = debounce(fetchClasses, 400);
 
 function onPageLoad() {
     var searchParams = new URLSearchParams(location.search);
