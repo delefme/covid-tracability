@@ -1,5 +1,6 @@
 html {
     min-width: auto;
+    touch-action: manipulation;
 }
 
 .buttons.grid {
@@ -21,6 +22,36 @@ html {
 .buttons.grid .complex-button {
     flex: 1 0 34%;
     margin: 15px 10px;
+    min-width: min(100%, 300px);
+}
+
+.buttons.grid .complex-button.is-selected .message-header {
+    background-color: #3273dc;
+    color: #fff;
+}
+
+.buttons.grid .complex-button.is-selected .message-body.is-selected {
+    background-color: #eef3fc;
+    color: #2160c4;
+}
+
+.rooms-container {
+    display: flex;
+    flex-direction: row;
+}
+
+.rooms-container .message-body {
+    border-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    flex-grow: 1;
+
+    cursor: pointer;
+}
+
+.rooms-container .message-body:not(:last-child) {
+    border-bottom-right-radius: 0;
+    border-right: solid 1px #4a4a4a;
 }
 
 .section {
